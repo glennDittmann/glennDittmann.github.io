@@ -1,17 +1,29 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import { createScene } from '$lib/scene'
+	import { onMount } from 'svelte';
+	import { World } from '$lib/world/World';
 
-    let el:HTMLCanvasElement;
+	let canvasContainer: HTMLDivElement;
 
-    onMount(() => {
-        createScene(el);
-    });
+    let world: World;
+
+	onMount(() => {
+		world = new World(canvasContainer);
+	});
+    
+    function render() {
+        world.start();
+    }
 </script>
 
 <svelte:head>
-    <title>My Homepage</title>
-    <meta name="description" content="Personal website built with Svelte and Three.js">
+	<title>My World</title>
+	<meta name="description" content="Personal website built with Svelte and Three.js" />
 </svelte:head>
 
-<canvas bind:this={el} />
+<button on:click={render}>Render</button>
+
+<button on:click={() => world.start()}>Play</button>
+
+<button on:click={() => world.stop()}>Stop</button>
+
+<div bind:this={canvasContainer}></div>
