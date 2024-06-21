@@ -1,10 +1,11 @@
-import { BoxGeometry, MathUtils, MeshStandardMaterial } from 'three';
+import { BoxGeometry, MathUtils, MeshStandardMaterial, TextureLoader } from 'three';
 import { TickableMesh } from '../systems/Loop';
+import uvTestBW from '$lib/textures/uv-test-bw.png';
 
 export function createCube(): TickableMesh {
 	const geometry = new BoxGeometry(2, 2, 2);
 
-	const material = new MeshStandardMaterial({color: 'purple'});
+	const material = createMaterial();
 
 	const cube = new TickableMesh(geometry, material);
 
@@ -19,4 +20,14 @@ export function createCube(): TickableMesh {
 	}
 
 	return cube;
+}
+
+export function createMaterial() {
+	const textureLoader = new TextureLoader();
+
+	const textureBW = textureLoader.load(uvTestBW);
+
+	const material = new MeshStandardMaterial({color: 'white', map: textureBW});
+
+	return material;
 }

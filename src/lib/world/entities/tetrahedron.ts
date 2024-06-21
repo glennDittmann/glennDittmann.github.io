@@ -1,10 +1,11 @@
-import { MathUtils, MeshNormalMaterial, TetrahedronGeometry } from "three";
+import { MathUtils, TetrahedronGeometry } from "three";
 import { TickableMesh } from "../systems/Loop";
+import { createMaterial } from "./cube";
 
 export function createTetrahedron() {
     const geometry = new TetrahedronGeometry(2, 0);
 
-    const material = new MeshNormalMaterial();
+    const material = createMaterial();
     
     const tet = new TickableMesh(geometry, material);
 

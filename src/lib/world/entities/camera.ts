@@ -8,7 +8,7 @@ export function createCamera() {
 		100 // Far Clipping Plane: anything further from the camera than this won't be rendered
 	);
 
-	camera.position.set(0, 0, 10); // move camera back so we can see the scene
+	camera.position.set(0, 5, 12); // move camera back so we can see the scene
 
 	return camera;
 }
