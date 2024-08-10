@@ -2,6 +2,19 @@ import './styles.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import gsap from 'gsap';
+import GUI from 'lil-gui';
+
+/** Debug GUI */
+const gui = new GUI({ title: 'Debug', width: 300, closeFolders: false });
+
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'h') {
+        gui.show(gui._hidden);
+    }
+})
+
+const debugContainer = {};
+debugContainer.color = '#ff89d8';
 
 const sizes = {
     width: window.innerWidth,
@@ -41,9 +54,32 @@ const canvas = document.querySelector('canvas.webgl');
 
 const scene = new THREE.Scene();
 
+const cubeTweaks = gui.addFolder('Cube');
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
-const material = new THREE.MeshBasicMaterial({ color: 0x91a889, wireframe: true });
+debugContainer.subdivision = 2;
+cubeTweaks.add(debugContainer, 'subdivision')
+    .min(1)
+    .max(20)
+    .step(1)
+    .onFinishChange(() => 
+{
+    mesh.geometry.dispose();
+    mesh.geometry = new THREE.BoxGeometry(1, 1, 1, debugContainer.subdivision, debugContainer.subdivision, debugContainer.subdivision);
+});
+
+const material = new THREE.MeshBasicMaterial({ color: debugContainer.color, wireframe: true });
 const mesh = new THREE.Mesh(geometry, material);
+cubeTweaks.add(mesh.position, 'y').min(- 3).max(3).step(0.01);
+cubeTweaks.add(mesh, 'visible');
+cubeTweaks.add(material, 'wireframe');
+cubeTweaks.addColor(debugContainer, 'color').onChange((value) => {
+    material.color.set(debugContainer.color);
+});
+debugContainer.spin = () => {
+    gsap.to(mesh.rotation, { duration: 1, y: mesh.rotation.y + Math.PI * 2 });
+}
+cubeTweaks.add(debugContainer, 'spin');
+
 
 const bufferGeometry = new THREE.BufferGeometry();
 const posArray = new Float32Array(2 * 3 * 3);
