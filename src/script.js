@@ -50,10 +50,39 @@ window.addEventListener('dblclick', () => {
     }
 });
 
+const loadingManager = new THREE.LoadingManager();
+loadingManager.onStart = () => {
+    console.log('loading started');
+};
+loadingManager.onLoad = () => {
+    console.log('loading finished');
+};
+loadingManager.onProgress = () => {
+    console.log('loading progressing');
+};
+loadingManager.onError = () => {
+    console.log('loading error');
+};
+const textureLoader = new THREE.TextureLoader(loadingManager);
+// load all textures
+const colorTexture = textureLoader.load('/textures/pool/color.jpg');
+colorTexture.colorSpace = THREE.SRGBColorSpace;
+colorTexture.minFilter = THREE.NearestFilter;
+colorTexture.magFilter = THREE.NearestFilter;
+colorTexture.wrapS = THREE.MirroredRepeatWrapping
+colorTexture.wrapT = THREE.MirroredRepeatWrapping
+const alphaTexture = textureLoader.load('/textures/door/alpha.jpg')
+const heightTexture = textureLoader.load('/textures/door/height.jpg')
+const normalTexture = textureLoader.load('/textures/door/normal.jpg')
+const ambientOcclusionTexture = textureLoader.load('/textures/door/ambientOcclusion.jpg')
+const metalnessTexture = textureLoader.load('/textures/door/metalness.jpg')
+const roughnessTexture = textureLoader.load('/textures/door/roughness.jpg')
+
 const canvas = document.querySelector('canvas.webgl');
 
 const scene = new THREE.Scene();
 
+/** Cube */
 const cubeTweaks = gui.addFolder('Cube');
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
 debugContainer.subdivision = 2;
@@ -67,7 +96,7 @@ cubeTweaks.add(debugContainer, 'subdivision')
     mesh.geometry = new THREE.BoxGeometry(1, 1, 1, debugContainer.subdivision, debugContainer.subdivision, debugContainer.subdivision);
 });
 
-const material = new THREE.MeshBasicMaterial({ color: debugContainer.color, wireframe: true });
+const material = new THREE.MeshBasicMaterial({ map: colorTexture });
 const mesh = new THREE.Mesh(geometry, material);
 cubeTweaks.add(mesh.position, 'y').min(- 3).max(3).step(0.01);
 cubeTweaks.add(mesh, 'visible');
@@ -81,6 +110,7 @@ debugContainer.spin = () => {
 cubeTweaks.add(debugContainer, 'spin');
 
 
+/** Buffered Triangle */
 const bufferGeometry = new THREE.BufferGeometry();
 const posArray = new Float32Array(2 * 3 * 3);
 for (let i = 0; i < posArray.length; i++) {
@@ -90,12 +120,15 @@ const posAttr = new THREE.BufferAttribute(posArray, 3);
 bufferGeometry.setAttribute('position', posAttr);
 const mesh2 = new THREE.Mesh(bufferGeometry, material);
 
+/** Camera */
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
 // camera.position.x = 2;
 // camera.position.y = 2;
 camera.position.z = 3;
 camera.lookAt(mesh.position);
 
+
+/** Renderer */
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 });
@@ -104,9 +137,11 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 scene.add(camera, mesh, mesh2);
 
+
 /** Controls */
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
+
 
 /** Animated render */
 // gsap.to(mesh.position, { duration: 1, delay: 1, x: 2 });
