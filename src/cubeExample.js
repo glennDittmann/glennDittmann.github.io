@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import gsap from 'gsap';
 
 export function runCubeExample(gui, debugContainer, textureLoader) {
   

@@ -12,6 +12,7 @@ import { runLightsExample } from './lightsExample';
 import { runRaycasterExample, handleRaycaster } from './raycasterExample';
 import { createGLTFLoader, createLoadingManager } from './loading';
 import { bounceObjects, rotateObjects } from './animations';
+import { createLights } from './lights';
 
 /** Debug GUI */
 const gui = new GUI({ title: 'Debug', width: 300, closeFolders: false });
@@ -42,9 +43,7 @@ const scene = new THREE.Scene();
 
 
 /** Lights */
-const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-const pointLight = new THREE.PointLight(0xffffff, 30);
-pointLight.position.set(2, 3, 4);
+createLights(scene, gui);
 
 
 /** Camera */
@@ -76,7 +75,7 @@ addEventListeners(camera, mouse, renderer, sizes, gui);
 let objects = [];
 
 /** Cube */
-// objects.push(runCubeExample(gui, debugContainer, textureLoader));
+objects.push(runCubeExample(gui, debugContainer, textureLoader));
 
 /** Materials Example */
 // objects.push(...runMaterialsExample(gui, scene, textureLoader));
@@ -89,22 +88,22 @@ let objects = [];
 
 
 /** Raycaster Example */
-objects.push(...runRaycasterExample(gui, debugContainer, textureLoader));
-const raycaster = new THREE.Raycaster();
+// objects.push(...runRaycasterExample(gui, debugContainer, textureLoader));
+// const raycaster = new THREE.Raycaster();
 
-const gltfLoader = createGLTFLoader();
-let duck = null;
-gltfLoader.load(
-    './models/duck/glTF-Binary/Duck.glb',
-    (gltf) => {
-        duck = gltf.scene;
-        scene.add(duck);
-    }
-);
+// const gltfLoader = createGLTFLoader();
+// let duck = null;
+// gltfLoader.load(
+//     './models/duck/glTF-Binary/Duck.glb',
+//     (gltf) => {
+//         duck = gltf.scene;
+//         scene.add(duck);
+//     }
+// );
 
 
 /** Set up scene */
-scene.add(camera, ambientLight, pointLight, ...objects);
+scene.add(camera, ...objects);
 
 
 /** Animate */
@@ -118,10 +117,10 @@ const tick = () => {
 
     // Update objects 
     // rotateObjects(objects, delta);
-    bounceObjects(objects, delta);
+    // bounceObjects(objects, delta);
 
     // Handle Raycaster
-    handleRaycaster(raycaster, mouse, camera, duck, objects);
+    // handleRaycaster(raycaster, mouse, camera, duck, objects);
 
     renderer.render(scene, camera);
 
