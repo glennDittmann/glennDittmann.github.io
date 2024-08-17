@@ -1,4 +1,4 @@
-export function addEventListeners(gui) {
+export function addEventListeners(camera, mouse, renderer, sizes, gui) {
   // Toggle Gui on H
   window.addEventListener('keydown', (event) => {
     if (event.key === 'h') {
@@ -8,12 +8,15 @@ export function addEventListeners(gui) {
 
   // Resize
   window.addEventListener('resize', () => {
+    // Update sizes
     sizes.width = window.innerWidth;
     sizes.height = window.innerHeight;
 
+    // Update camera
     camera.aspect = sizes.width / sizes.height;
     camera.updateProjectionMatrix();
     
+    // Update renderer
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   });
@@ -35,5 +38,11 @@ export function addEventListeners(gui) {
             document.webkitExitFullscreen();
         }
     }
+  });
+
+  // Mouse move 
+  window.addEventListener('mousemove', (event) => {
+    mouse.x = event.clientX / sizes.width * 2 - 1
+    mouse.y = - (event.clientY / sizes.height) * 2 + 1
   });
 }

@@ -5,11 +5,13 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import gsap from 'gsap';
 import GUI from 'lil-gui';
 import { addEventListeners } from './events';
-import { runExperimentsExample } from './materialsExample';
+import { runCubeExample } from './cubeExample';
+import { runMaterialsExample } from './materialsExample';
 import { runFontsExample } from './fontsExample';
 import { runLightsExample } from './lightsExample';
-import { runCubeExample } from './cubeExample';
-import { createLoadingManager } from '../loading';
+import { runRaycasterExample, handleRaycaster } from './raycasterExample';
+import { createGLTFLoader, createLoadingManager } from './loading';
+import { bounceObjects, rotateObjects } from './animations';
 
 /** Debug GUI */
 const gui = new GUI({ title: 'Debug', width: 300, closeFolders: false });
@@ -22,9 +24,6 @@ const sizes = {
     height: window.innerHeight
 };
 
-
-/** Event Listerner */
-addEventListeners(gui);
 
 /** Loading Manager */
 const loadingManager = createLoadingManager();
@@ -66,20 +65,42 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 
+/** Mouse */
+const mouse = new THREE.Vector2();
+
+/** Event Listerner */
+addEventListeners(camera, mouse, renderer, sizes, gui);
+
+
 /** Experiments with Objects storage for all examples */
 let objects = [];
 
 /** Cube */
-objects.push(runCubeExample(scene, gui, debugContainer, textureLoader));
+// objects.push(runCubeExample(gui, debugContainer, textureLoader));
 
 /** Materials Example */
-// objects.push(...runExperimentsExample(gui, scene, textureLoader));
+// objects.push(...runMaterialsExample(gui, scene, textureLoader));
 
 /** 3D Fonts Example */
 // runFontsExample(scene, textureLoader);
 
 /** Lights Example */
 // runLightsExample(scene);
+
+
+/** Raycaster Example */
+objects.push(...runRaycasterExample(gui, debugContainer, textureLoader));
+const raycaster = new THREE.Raycaster();
+
+const gltfLoader = createGLTFLoader();
+let duck = null;
+gltfLoader.load(
+    './models/duck/glTF-Binary/Duck.glb',
+    (gltf) => {
+        duck = gltf.scene;
+        scene.add(duck);
+    }
+);
 
 
 /** Set up scene */
@@ -91,15 +112,16 @@ const clock = new THREE.Clock();
 // gsap.to(mesh.position, { duration: 1, delay: 1, x: 2 });
 
 const tick = () => {
-    const elapsedTime = clock.getElapsedTime();
+    const delta = clock.getElapsedTime();
     
-    controls.update();
+    controls.update(delta);
 
     // Update objects 
-    objects.forEach((object) => {
-        object.rotation.x = -0.15 * elapsedTime;
-        object.rotation.y = -0.1 * elapsedTime;
-    });
+    // rotateObjects(objects, delta);
+    bounceObjects(objects, delta);
+
+    // Handle Raycaster
+    handleRaycaster(raycaster, mouse, camera, duck, objects);
 
     renderer.render(scene, camera);
 

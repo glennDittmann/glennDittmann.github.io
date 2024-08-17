@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export function runCubeExample(scene, gui, debugContainer, textureLoader) {
+export function runCubeExample(gui, debugContainer, textureLoader) {
   
   const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
   const poolColorTexture = textureLoader.load('/textures/pool/color.jpg');

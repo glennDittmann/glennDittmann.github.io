@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 
-export function runExperimentsExample(gui, scene, textureLoader) {
+export function runMaterialsExample(gui, scene, textureLoader) {
   /** Textures */
   // Door
   const doorColorTexture = textureLoader.load('/textures/door/color.jpg');
