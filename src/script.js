@@ -4,8 +4,12 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 import gsap from 'gsap';
 import GUI from 'lil-gui';
+import { addEventListeners } from './events';
 import { runExperimentsExample } from './materialsExample';
 import { runFontsExample } from './fontsExample';
+import { runLightsExample } from './lightsExample';
+import { runCubeExample } from './cubeExample';
+import { createLoadingManager } from '../loading';
 
 /** Debug GUI */
 const gui = new GUI({ title: 'Debug', width: 300, closeFolders: false });
@@ -20,64 +24,14 @@ const sizes = {
 
 
 /** Event Listerner */
-// Toggle Gui
-window.addEventListener('keydown', (event) => {
-    if (event.key === 'h') {
-        gui.show(gui._hidden);
-    }
-})
-
-// Resize
-window.addEventListener('resize', () => {
-    sizes.width = window.innerWidth;
-    sizes.height = window.innerHeight;
-
-    camera.aspect = sizes.width / sizes.height;
-    camera.updateProjectionMatrix();
-    
-    renderer.setSize(sizes.width, sizes.height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-});
-
-// Double Click
-window.addEventListener('dblclick', () => {
-    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
-
-    if (!fullscreenElement) {
-        if (canvas.requestFullscreen) {
-            canvas.requestFullscreen();
-        } else if (canvas.webkitRequestFullscreen) {
-            canvas.webkitRequestFullscreen();
-        }
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        }
-    }
-});
+addEventListeners(gui);
 
 /** Loading Manager */
-const loadingManager = new THREE.LoadingManager();
-loadingManager.onStart = () => {
-    console.log('loading started');
-};
-loadingManager.onLoad = () => {
-    console.log('loading finished');
-};
-loadingManager.onProgress = () => {
-    console.log('loading progressing');
-};
-loadingManager.onError = () => {
-    console.log('loading error');
-};
+const loadingManager = createLoadingManager();
 
-/** Textures */
+
+/** Texture Loader */
 const textureLoader = new THREE.TextureLoader(loadingManager);
-
-// Pool
-const poolColorTexture = textureLoader.load('/textures/pool/color.jpg');
 
 
 /** Canvas */
@@ -94,37 +48,14 @@ const pointLight = new THREE.PointLight(0xffffff, 30);
 pointLight.position.set(2, 3, 4);
 
 
-/** Cube */
-const cubeFolder = gui.addFolder('Cube');
-const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
-debugContainer.subdivision = 2;
-cubeFolder.add(debugContainer, 'subdivision')
-    .min(1)
-    .max(20)
-    .step(1)
-    .onFinishChange(() => 
-{
-    cubeMesh.geometry.dispose();
-    cubeMesh.geometry = new THREE.BoxGeometry(1, 1, 1, debugContainer.subdivision, debugContainer.subdivision, debugContainer.subdivision);
-});
-
-const material = new THREE.MeshBasicMaterial({ map: poolColorTexture });
-const cubeMesh = new THREE.Mesh(geometry, material);
-cubeFolder.add(cubeMesh.position, 'y').min(- 3).max(3).step(0.01);
-cubeFolder.add(cubeMesh, 'visible');
-cubeFolder.add(material, 'wireframe');
-cubeFolder.addColor(debugContainer, 'color').onChange((value) => {
-    material.color.set(debugContainer.color);
-});
-debugContainer.spin = () => {
-    gsap.to(cubeMesh.rotation, { duration: 1, y: cubeMesh.rotation.y + Math.PI * 2 });
-}
-cubeFolder.add(debugContainer, 'spin');
-
-
 /** Camera */
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
 camera.position.z = 3;
+
+
+/** Controls */
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
 
 
 /** Renderer */
@@ -134,22 +65,28 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-scene.add(camera, ambientLight, pointLight);
 
+/** Experiments with Objects storage for all examples */
+let objects = [];
 
-/** Controls */
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-
+/** Cube */
+objects.push(runCubeExample(scene, gui, debugContainer, textureLoader));
 
 /** Materials Example */
-let objects = [];
-// objects = runExperimentsExample(gui, scene, textureLoader);
+// objects.push(...runExperimentsExample(gui, scene, textureLoader));
 
 /** 3D Fonts Example */
-runFontsExample(scene, textureLoader);
+// runFontsExample(scene, textureLoader);
 
-/** Animated render */
+/** Lights Example */
+// runLightsExample(scene);
+
+
+/** Set up scene */
+scene.add(camera, ambientLight, pointLight, ...objects);
+
+
+/** Animate */
 const clock = new THREE.Clock();
 // gsap.to(mesh.position, { duration: 1, delay: 1, x: 2 });
 
