@@ -11,8 +11,9 @@ import { runFontsExample } from './fontsExample';
 import { runLightsExample } from './lightsExample';
 import { runRaycasterExample, handleRaycaster } from './raycasterExample';
 import { createGLTFLoader, createLoadingManager } from './loading';
-import { bounceObjects, rotateObjects } from './animations';
+import { bounceObjects, bounceShadowedSphere, rotateObjects } from './animations';
 import { createLights } from './lights';
+import { runShadowsExample } from './shadowsExample';
 
 /** Debug GUI */
 const gui = new GUI({ title: 'Debug', width: 300, closeFolders: false });
@@ -43,7 +44,7 @@ const scene = new THREE.Scene();
 
 
 /** Lights */
-createLights(scene, gui);
+// createLights(scene, gui);
 
 
 /** Camera */
@@ -62,6 +63,8 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = false;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 
 /** Mouse */
@@ -86,6 +89,8 @@ objects.push(runCubeExample(gui, debugContainer, textureLoader));
 /** Lights Example */
 // runLightsExample(scene);
 
+/** Shadows Example */
+// const [sphere, sphereShadow] = runShadowsExample(scene, gui, textureLoader);
 
 /** Raycaster Example */
 // objects.push(...runRaycasterExample(gui, debugContainer, textureLoader));
@@ -118,6 +123,7 @@ const tick = () => {
     // Update objects 
     // rotateObjects(objects, delta);
     // bounceObjects(objects, delta);
+    // bounceShadowedSphere(sphere, sphereShadow, delta);
 
     // Handle Raycaster
     // handleRaycaster(raycaster, mouse, camera, duck, objects);
