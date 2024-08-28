@@ -11,9 +11,10 @@ import { runFontsExample } from './fontsExample';
 import { runLightsExample } from './lightsExample';
 import { runRaycasterExample, handleRaycaster } from './raycasterExample';
 import { createGLTFLoader, createLoadingManager } from './loading';
-import { bounceObjects, bounceShadowedSphere, rotateObjects } from './animations';
+import { bounceObjects, bounceShadowedSphere, rotateObjects, waveParticles } from './animations';
 import { createLights } from './lights';
 import { runShadowsExample } from './shadowsExample';
+import { runParticlesExample } from './particles';
 
 /** Debug GUI */
 const gui = new GUI({ title: 'Debug', width: 300, closeFolders: false });
@@ -78,7 +79,7 @@ addEventListeners(camera, mouse, renderer, sizes, gui);
 let objects = [];
 
 /** Cube */
-objects.push(runCubeExample(gui, debugContainer, textureLoader));
+// objects.push(runCubeExample(gui, debugContainer, textureLoader));
 
 /** Materials Example */
 // objects.push(...runMaterialsExample(gui, scene, textureLoader));
@@ -91,6 +92,9 @@ objects.push(runCubeExample(gui, debugContainer, textureLoader));
 
 /** Shadows Example */
 // const [sphere, sphereShadow] = runShadowsExample(scene, gui, textureLoader);
+
+/** Particles Example */
+const particles = runParticlesExample(scene, textureLoader);
 
 /** Raycaster Example */
 // objects.push(...runRaycasterExample(gui, debugContainer, textureLoader));
@@ -124,6 +128,7 @@ const tick = () => {
     // rotateObjects(objects, delta);
     // bounceObjects(objects, delta);
     // bounceShadowedSphere(sphere, sphereShadow, delta);
+    // waveParticles(particles, delta);
 
     // Handle Raycaster
     // handleRaycaster(raycaster, mouse, camera, duck, objects);

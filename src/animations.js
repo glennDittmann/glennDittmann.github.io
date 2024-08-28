@@ -22,3 +22,13 @@ export const bounceShadowedSphere = (sphere, sphereShadow, delta) => {
   sphereShadow.position.z = sphere.position.z
   sphereShadow.material.opacity = (1 - sphere.position.y) * 0.3
 }
+
+export const waveParticles = (particles, delta) => {
+  for (let i = 0; i < 20000; i++) {
+    const x_idx = i * 3;
+    const y_idx = i * 3 + 1;
+    const x = particles.geometry.attributes.position.array[x_idx];
+    particles.geometry.attributes.position.array[y_idx] = Math.sin(delta + x);
+  }
+  particles.geometry.attributes.position.needsUpdate = true;
+}
