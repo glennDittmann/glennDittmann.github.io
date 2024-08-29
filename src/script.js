@@ -15,6 +15,7 @@ import { bounceObjects, bounceShadowedSphere, rotateObjects, waveParticles } fro
 import { createLights } from './lights';
 import { runShadowsExample } from './shadowsExample';
 import { runParticlesExample } from './particles';
+import { runGalaxyGenerator } from './galaxyGenerator';
 
 /** Debug GUI */
 const gui = new GUI({ title: 'Debug', width: 300, closeFolders: false });
@@ -94,7 +95,10 @@ let objects = [];
 // const [sphere, sphereShadow] = runShadowsExample(scene, gui, textureLoader);
 
 /** Particles Example */
-const particles = runParticlesExample(scene, textureLoader);
+// const particles = runParticlesExample(scene, textureLoader);
+
+/** Galaxy Generator */
+runGalaxyGenerator(scene, gui);
 
 /** Raycaster Example */
 // objects.push(...runRaycasterExample(gui, debugContainer, textureLoader));
