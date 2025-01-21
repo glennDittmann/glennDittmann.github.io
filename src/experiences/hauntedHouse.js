@@ -359,3 +359,11 @@ function createGraves(textureLoader) {
 
   return graves;
 }
+
+export function animateGhost(ghost, elapsedTime, radius, speed, angleModifier) {
+  const angle = angleModifier * elapsedTime * speed;
+  ghost.position.x = Math.cos(angle) * radius;
+  ghost.position.z = Math.sin(angle) * radius;
+  ghost.position.y =
+    Math.sin(angle) * Math.sin(angle * 2.35) * Math.sin(angle * 3.45);
+}

@@ -23,9 +23,11 @@ import { runShadowsExample } from "./shadowsExample";
 import { runParticlesExample } from "./particles";
 import { runGalaxyGenerator } from "./galaxyGenerator";
 import {
+  animateGhost,
   runHauntedHouse,
   ghostAnimationSettings,
 } from "./experiences/hauntedHouse";
+import { scrollAnimations } from "./experiences/scrollAnimation";
 
 /** Debug GUI */
 const gui = new GUI({ title: "Debug", width: 300, closeFolders: false });
@@ -36,6 +38,17 @@ debugContainer.color = "#ff89d8";
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
+};
+
+const settings = {
+  controlsActive: false,
+  camera: {
+    fov: 35,
+    aspect: sizes.width / sizes.height,
+    near: 0.1,
+    far: 100,
+  },
+  scrollAnimationsExperience: true,
 };
 
 /** Loading Manager */
@@ -54,14 +67,15 @@ const scene = new THREE.Scene();
 // createLights(scene, gui);
 
 /** Camera */
+const cameraGroup = new THREE.Group();
 const camera = new THREE.PerspectiveCamera(
-  75,
-  sizes.width / sizes.height,
-  0.1,
-  100,
+  settings.camera.fov,
+  settings.camera.aspect,
+  settings.camera.near,
+  settings.camera.far,
 );
-camera.position.set(0, 8, 14);
-camera.lookAt(0, 0, 0);
+camera.position.z = 6;
+cameraGroup.add(camera);
 
 /** Controls */
 const controls = new OrbitControls(camera, canvas);
@@ -70,6 +84,7 @@ controls.enableDamping = true;
 /** Renderer */
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
+  alpha: true, // for the scroll animations experience
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -114,7 +129,10 @@ let objects = [];
 
 /** Haunted House */
 // Note: this scene creates its own lights
-const ghosts = runHauntedHouse(scene, textureLoader, gui);
+// const ghosts = runHauntedHouse(scene, textureLoader, gui);
+
+/** Scroll Animation */
+const scrollMeshes = scrollAnimations(scene, textureLoader, gui);
 
 /** Raycaster Example */
 // objects.push(...runRaycasterExample(gui, debugContainer, textureLoader));
@@ -131,7 +149,37 @@ const ghosts = runHauntedHouse(scene, textureLoader, gui);
 // );
 
 /** Set up scene */
-scene.add(camera, ...objects);
+scene.add(cameraGroup, ...objects);
+
+/** Scroll */
+let scrollY = window.scrollY;
+let currentSection = 0;
+window.addEventListener("scroll", () => {
+  scrollY = window.scrollY;
+
+  const newSection = Math.round(scrollY / sizes.height); // scrolly / sizes.height goes up by 1 unit per section (bc our css set the secs to 1vp height point)
+  if (newSection != currentSection) {
+    currentSection = newSection;
+
+    gsap.to(scrollMeshes[currentSection].rotation, {
+      duration: 1.5,
+      ease: "power2.inOut",
+      x: "+=6",
+      y: "+=3",
+      z: "+=1.5",
+    });
+  }
+});
+
+/** Cursor */
+let cursor = {
+  x: 0,
+  y: 0,
+};
+window.addEventListener("mousemove", (event) => {
+  cursor.x = event.clientX / sizes.width - 0.5;
+  cursor.y = event.clientY / sizes.height - 0.5;
+});
 
 /** Animate */
 const clock = new THREE.Clock();
@@ -140,19 +188,39 @@ const timer = new Timer(); // Use the timer for the Haunted House experience
 
 const tick = () => {
   const delta = clock.getElapsedTime();
-
   // Timer
   timer.update();
   const elapsedTime = timer.getElapsed();
+  const deltaTime = timer.getDelta();
 
   // Ghosts from the Haunted House experience
-  ghosts.forEach((ghost, idx) => {
-    const { radius, speed, angleModifier } = ghostAnimationSettings[idx];
-    animateGhost(ghost, elapsedTime, radius, speed, angleModifier);
-  });
+  // ghosts.forEach((ghost, idx) => {
+  //   const { radius, speed, angleModifier } = ghostAnimationSettings[idx];
+  //   animateGhost(ghost, elapsedTime, radius, speed, angleModifier);
+  // });
+
+  // Meshes and Camera from the Scroll Animation experience
+  if (settings.scrollAnimationsExperience) {
+    // rotate meshes
+    scrollMeshes.forEach((mesh) => {
+      mesh.rotation.x += deltaTime * 0.1;
+      mesh.rotation.y += deltaTime * 0.2;
+    });
+
+    // move camera with scroll
+    camera.position.y = -(scrollY / sizes.height) * 4; // scrollY / sizes.height goes down by 1 unit per section
+
+    // parralax effect on mouse move
+    const parallaxX = cursor.x * 0.5;
+    const parallaxY = -cursor.y * 0.5;
+    cameraGroup.position.x +=
+      (parallaxX - cameraGroup.position.x) * 5 * deltaTime;
+    cameraGroup.position.y +=
+      (parallaxY - cameraGroup.position.y) * 5 * deltaTime;
+  }
 
   // Update controls
-  controls.update(delta);
+  if (settings.controlsActive) controls.update(delta);
 
   // Update objects
   // rotateObjects(objects, delta);
@@ -171,11 +239,3 @@ const tick = () => {
 };
 
 tick();
-
-function animateGhost(ghost, elapsedTime, radius, speed, angleModifier) {
-  const angle = angleModifier * elapsedTime * speed;
-  ghost.position.x = Math.cos(angle) * radius;
-  ghost.position.z = Math.sin(angle) * radius;
-  ghost.position.y =
-    Math.sin(angle) * Math.sin(angle * 2.35) * Math.sin(angle * 3.45);
-}
