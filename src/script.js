@@ -2,6 +2,7 @@ import "./styles.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Timer } from "three/addons/misc/Timer.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 import gsap from "gsap";
 import GUI from "lil-gui";
@@ -133,6 +134,9 @@ let objects = [];
 
 /** Scroll Animation */
 const scrollMeshes = scrollAnimations(scene, textureLoader, gui);
+
+/** Load Models */
+// const gltfLoader = new GLTFLoader();
 
 /** Raycaster Example */
 // objects.push(...runRaycasterExample(gui, debugContainer, textureLoader));
