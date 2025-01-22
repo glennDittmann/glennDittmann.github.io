@@ -3,6 +3,7 @@ import { transformWithEsbuild } from "vite";
 import restart from "vite-plugin-restart";
 
 export default {
+  base: "/",
   root: "src/",
   publicDir: "../static/", // Path from "root" to static assets (files that are served as they are)
   server: {
