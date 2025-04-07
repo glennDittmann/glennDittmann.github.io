@@ -7,10 +7,10 @@ html {
     background: #1e1a20;
 }
 
-/* html,
+html,
 body {
     overflow: hidden;
-} */
+}
 
 .webgl {
     position: fixed;
@@ -19,7 +19,7 @@ body {
     outline: none;
 }
 
-.section {
+/* .section {
     display: flex;
     align-items: center;
     height: 100vh;
@@ -34,4 +34,4 @@ body {
 
 .section:nth-child(odd) {
     justify-content: flex-end;
-}
+} */

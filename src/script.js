@@ -29,6 +29,8 @@ import {
   ghostAnimationSettings,
 } from "./experiences/hauntedHouse";
 import { scrollAnimations } from "./experiences/scrollAnimation";
+import vertexShader from "./shaders/flag/vertex.glsl";
+import fragmentShader from "./shaders/flag/fragment.glsl";
 
 /** Debug GUI */
 const gui = new GUI({ title: "Debug", width: 300, closeFolders: false });
@@ -42,14 +44,14 @@ const sizes = {
 };
 
 const settings = {
-  controlsActive: false,
+  controlsActive: true,
   camera: {
     fov: 35,
     aspect: sizes.width / sizes.height,
     near: 0.1,
     far: 100,
   },
-  scrollAnimationsExperience: true,
+  scrollAnimationsExperience: false,
 };
 
 /** Loading Manager */
@@ -138,6 +140,44 @@ const scrollMeshes = scrollAnimations(scene, textureLoader, gui);
 /** Load Models */
 // const gltfLoader = new GLTFLoader();
 
+/** Shaders */
+const geo = new THREE.PlaneGeometry(1, 1, 32, 32);
+const count = geo.attributes.position.count;
+const randoms = new Float32Array(count);
+
+for (let i = 0; i < count; i++) {
+  randoms[i] = Math.random();
+}
+
+geo.setAttribute("aRandom", new THREE.BufferAttribute(randoms, 1));
+
+const shader = new THREE.RawShaderMaterial({
+  vertexShader,
+  fragmentShader,
+  uniforms: {
+    uFrequency: { value: new THREE.Vector2(10, 5) },
+    uTime: { value: 0 },
+    uColor: { value: new THREE.Color("orange") },
+  },
+});
+
+gui
+  .add(shader.uniforms.uFrequency.value, "x")
+  .min(0)
+  .max(20)
+  .step(0.01)
+  .name("frequencyX");
+gui
+  .add(shader.uniforms.uFrequency.value, "y")
+  .min(0)
+  .max(20)
+  .step(0.01)
+  .name("frequencyY");
+
+const mesh = new THREE.Mesh(geo, shader);
+mesh.scale.y = 2 / 3;
+scene.add(mesh);
+
 /** Raycaster Example */
 // objects.push(...runRaycasterExample(gui, debugContainer, textureLoader));
 // const raycaster = new THREE.Raycaster();
@@ -224,7 +264,12 @@ const tick = () => {
   }
 
   // Update controls
-  if (settings.controlsActive) controls.update(delta);
+  if (settings.controlsActive) {
+    controls.update(delta);
+  }
+
+  // Update shader materials
+  shader.uniforms.uTime.value = elapsedTime;
 
   // Update objects
   // rotateObjects(objects, delta);
