@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+
+		<!-- Web Awesome -->
+		<link
+			rel="stylesheet"
+			href="https://early.webawesome.com/webawesome@3.0.0-beta.2/dist/styles/webawesome.css"
+		/>
+		<script
+			type="module"
+			src="https://early.webawesome.com/webawesome@3.0.0-beta.2/dist/webawesome.loader.js"
+		></script>
+
+		<title>G. D.</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<style>
+	/*
+		Josh's Custom CSS Reset
+		https://www.joshwcomeau.com/css/custom-css-reset/
+	*/
+
+	/* 1. Use a more-intuitive box-sizing model */
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	/* 2. Remove default margin */
+	* {
+		margin: 0;
+	}
+
+	/* 3. Enable keyword animations */
+	@media (prefers-reduced-motion: no-preference) {
+		html {
+			interpolate-size: allow-keywords;
+		}
+	}
+
+	body {
+		/* 4. Add accessible line-height */
+		line-height: 1.5;
+		/* 5. Improve text rendering */
+		-webkit-font-smoothing: antialiased;
+	}
+
+	/* 6. Improve media defaults */
+	img,
+	picture,
+	video,
+	canvas,
+	svg {
+		display: block;
+		max-width: 100%;
+	}
+
+	/* 7. Inherit fonts for form controls */
+	input,
+	button,
+	textarea,
+	select {
+		font: inherit;
+	}
+
+	/* 8. Avoid text overflows */
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		overflow-wrap: break-word;
+	}
+
+	/* 9. Improve line wrapping */
+	p {
+		text-wrap: pretty;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		text-wrap: balance;
+	}
+
+	/* 10. Create a root stacking context */
+	#root,
+	#__next {
+		isolation: isolate;
+	}
+</style>
