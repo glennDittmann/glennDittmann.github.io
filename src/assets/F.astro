@@ -1,0 +1,36 @@
+---
+import Rect from "./Rect.astro";
+
+const {
+  width = 200,
+  height = 200,
+  stroke = "black",
+  strokeWidth = 4,
+  fill = "none",
+  ...rest
+} = Astro.props;
+---
+
+<svg width={width} height={height} viewBox="-10 -10 120 120" {...rest}>
+  <polygon
+    points="
+      0,0
+      0,100
+      50,100
+      50,60
+      100,60
+      100,0
+    "
+    stroke={stroke}
+    stroke-width={strokeWidth}
+    fill={fill}
+  >
+  </polygon>
+  <line
+    x1="50"
+    y1="40"
+    x2="100"
+    y2="40"
+    stroke={stroke}
+    stroke-width={strokeWidth}></line>
+</svg>
