@@ -1,0 +1,24 @@
+---
+const {
+  width = 200,
+  height = 200,
+  stroke = "black",
+  strokeWidth = 4,
+  fill = "none",
+  ...rest
+} = Astro.props;
+---
+
+<svg width={width} height={height} viewBox="-10 -10 120 120" {...rest}>
+  <rect
+    x="0"
+    y="0"
+    width="100"
+    height="100"
+    fill={fill}
+    stroke={stroke}
+    stroke-width={strokeWidth}
+  >
+  </rect>
+  <slot />
+</svg>
