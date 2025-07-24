@@ -1,0 +1,36 @@
+---
+import Rect from "./Rect.astro";
+
+const {
+  width = 200,
+  height = 200,
+  stroke = "black",
+  strokeWidth = 4,
+  fill = "none",
+  ...rest
+} = Astro.props;
+---
+
+<Rect width={width} height={height} stroke={stroke} fill={fill} {...rest}>
+  <line
+    x1="50"
+    y1="30"
+    x2="50"
+    y2="45"
+    stroke={stroke}
+    stroke-width={strokeWidth}></line>
+  <line
+    x1="50"
+    y1="55"
+    x2="50"
+    y2="70"
+    stroke={stroke}
+    stroke-width={strokeWidth}></line>
+  <line
+    x1="70"
+    y1="50"
+    x2="100"
+    y2="50"
+    stroke={stroke}
+    stroke-width={strokeWidth}></line>
+</Rect>
