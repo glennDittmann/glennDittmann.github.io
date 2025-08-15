@@ -1,25 +1,242 @@
 ---
+import A from "../assets/A.astro";
+import B from "../assets/B.astro";
+import C from "../assets/C.astro";
+import D from "../assets/D.astro";
+import E from "../assets/E.astro";
+import F from "../assets/F.astro";
+import G from "../assets/G.astro";
+import H from "../assets/H.astro";
+import I from "../assets/I.astro";
+import Rect from "../assets/Rect.astro";
+import J from "../assets/J.astro";
+import K from "../assets/K.astro";
+import L from "../assets/L.astro";
+import M from "../assets/M.astro";
+import N from "../assets/N.astro";
+import O from "../assets/O.astro";
+import P from "../assets/P.astro";
+import Q from "../assets/Q.astro";
+import R from "../assets/R.astro";
+import S from "../assets/S.astro";
+import T from "../assets/T.astro";
+import U from "../assets/U.astro";
+import V from "../assets/V.astro";
+import W from "../assets/W.astro";
+import X from "../assets/X.astro";
+import Y from "../assets/Y.astro";
+import Z from "../assets/Z.astro";
 
+const defaultWidth = 100;
+const defaultHeight = 100;
 ---
 
-<div class="header flex gap-8 border-2 border-teal-800">
+<div class="header flex-row gap-8 border-2 border-teal-800">
 	<wa-tooltip for="box">I'm animated !</wa-tooltip>
 	<wa-tooltip for="box3">I'm animated too !</wa-tooltip>
-	<div id="box" class="box w-10 h-10 bg-teal-600 rounded-md"></div>
 
 	<div class="flex gap-8">
-		<div class="box2 w-10 h-10 bg-pink-300 rounded-md"></div>
-		<div class="box2 w-10 h-10 bg-pink-500 rounded-md"></div>
-		<div class="box2 w-10 h-10 bg-pink-700 rounded-md"></div>
-		<div class="box2 w-10 h-10 bg-pink-900 rounded-md"></div>
+		<div id="box" class="box w-10 h-10 bg-teal-600 rounded-md"></div>
+
+		<div class="flex gap-8">
+			<div class="box2 w-10 h-10 bg-pink-300 rounded-md"></div>
+			<div class="box2 w-10 h-10 bg-pink-500 rounded-md"></div>
+			<div class="box2 w-10 h-10 bg-pink-700 rounded-md"></div>
+			<div class="box2 w-10 h-10 bg-pink-900 rounded-md"></div>
+		</div>
+
+		<div id="box3" class="box3 w-10 h-10 bg-orange-400 rounded-md"></div>
+
+		<div class="border border-gray-500">
+			<svg width="50" height="50">
+				<circle fill="hotpink" r="30" cx="50" cy="50"></circle>
+			</svg>
+		</div>
 	</div>
 
-	<div id="box3" class="box3 w-10 h-10 bg-orange-400 rounded-md"></div>
+	<div class="flex flex-wrap gap-8">
+		<Rect
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<A
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<B
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<C
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<D
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<E
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<F
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<G
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<H
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<I
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<J
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<K
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<L
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<M
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<N
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<O
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<P
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<Q
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<R
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<S
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<T
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<U
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<V
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<W
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<X
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<Y
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+
+		<Z
+			width={defaultWidth}
+			height={defaultHeight}
+			class="border border-orange-500"
+		/>
+	</div>
 </div>
+
+<style>
+	circle {
+		transition:
+			r 400ms,
+			cy 600ms;
+	}
+	div:hover circle {
+		r: 50px;
+		cy: 100px;
+	}
+</style>
 
 <script>
 	import { animate, stagger } from "motion";
 	import gsap from "gsap";
+	import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+
+	gsap.registerPlugin(DrawSVGPlugin);
 
 	animate(
 		".box",
@@ -46,4 +263,20 @@
 		repeat: -1,
 		repeatDelay: 0.2,
 	});
+
+	const tl = gsap
+		.timeline({
+			repeat: 0,
+			defaults: { duration: 3, ease: "power1.inOut" },
+		})
+		.set("svg", { opacity: 1 })
+		.from("line", { drawSVG: "0% 0%" });
+
+	const t2 = gsap
+		.timeline({
+			repeat: 0,
+			defaults: { duration: 3, ease: "power1.inOut" },
+		})
+		.set("svg", { opacity: 1 })
+		.from("rect", { drawSVG: "0% 0%" });
 </script>
