@@ -1,0 +1,21 @@
+@keyframes disperse {
+  to {
+    transform: translate(var(--x), var(--y));
+  }
+}
+
+@keyframes fadeToTransparent {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes twinkle {
+  from {
+    opacity: var(--twinkle-amount);
+  }
+
+  to {
+    opacity: 1;
+  }
+}
