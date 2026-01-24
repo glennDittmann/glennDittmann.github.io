@@ -4,6 +4,12 @@
   }
 }
 
+@keyframes fadeFromOpaque {
+  from {
+    opacity: 1;
+  }
+}
+
 @keyframes fadeToTransparent {
   to {
     opacity: 0;
