@@ -1,0 +1,215 @@
+---
+const {
+  width = 200,
+  height = 200,
+  stroke = "white",
+  strokeWidth = 6,
+  fill = "none",
+  ...rest
+} = Astro.props;
+---
+
+<button class="triangle-button">
+  <span class="pop-circle"></span>
+  <svg width={width} height={height} viewBox="-10 -10 120 120" {...rest}>
+    <polygon
+      class="triangle-button-polygon"
+      points="50,0 0,100 100,100"
+      stroke={stroke}
+      stroke-width={strokeWidth}
+      fill={fill}></polygon>
+  </svg>
+</button>
+
+<script>
+  import {
+    lerperino,
+    polarToCartesian,
+    randBetween,
+    randDeg,
+  } from "../utils/math";
+  import "../styles/animations.css";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const JITTER = 10;
+    const PARTICLE_CLEANUP_DELAY_MS = 200;
+    const MIN_DISTANCE = 32;
+    const MAX_DISTANCE = 64;
+    const NUM_PARTICLES = 15;
+    const MIN_FADE_DURATION_MS = 500;
+    const MAX_FADE_DURATION_MS = 1500;
+    const MAX_FADE_DELAY_MS = 500;
+    const MAX_FADE_ADJUST_MS = 200;
+    const PARTICLE_DELAY_MS = 150;
+    const button = document.querySelector(".triangle-button") as HTMLElement;
+
+    button?.addEventListener("click", () => {
+      button?.classList.toggle("liked");
+
+      button?.style.setProperty(
+        "--pop-circle-duration",
+        `${PARTICLE_DELAY_MS}ms`,
+      );
+
+      const isLiked = button?.classList.contains("liked");
+
+      // Create particles when clicked
+      if (isLiked) {
+        const particles: HTMLElement[] = [];
+
+        for (let idx = 0; idx < NUM_PARTICLES; idx++) {
+          const particle = document.createElement("div");
+          particle.classList.add("particle");
+
+          let angle = lerperino(idx, 0, NUM_PARTICLES, 0, 360);
+          angle += randBetween(-JITTER, JITTER);
+          const distance = randBetween(MIN_DISTANCE, MAX_DISTANCE);
+          const coords = polarToCartesian(angle, distance);
+
+          const size = randBetween(9, 12);
+
+          particle.style.backgroundColor = `hsl(${randDeg()}deg 100% 80%)`;
+          particle.style.setProperty("--hue-rotation", "720deg");
+
+          particle.style.setProperty("--size", `${size}px`);
+          particle.style.setProperty("--x", `${coords.x}px`);
+          particle.style.setProperty("--y", `${coords.y}px`);
+          particle.style.setProperty(
+            "--twinkle-amount",
+            `${randBetween(0.325, 1.0)}`,
+          );
+          particle.style.animation = `
+              twinkle 
+                ${randBetween(150, 300)}ms
+                infinite 
+                alternate 
+                ease-in-out,
+              fadeToTransparent 
+                ${lerperino(distance, MIN_DISTANCE, MAX_DISTANCE, MIN_FADE_DURATION_MS, MAX_FADE_DURATION_MS) + randBetween(-200, 200)}ms
+                ${lerperino(distance, MIN_DISTANCE, MAX_DISTANCE, 0, MAX_FADE_DELAY_MS) + randBetween(0, MAX_FADE_ADJUST_MS)}ms
+                forwards,
+              disperse 
+                ${lerperino(distance, MIN_DISTANCE, MAX_DISTANCE, 400, 800) + randBetween(-200, 200)}ms
+                forwards 
+                cubic-bezier(0.20, 0.56, 0.00, 1.00),
+              hueRotate
+                1000ms
+          `;
+
+          particles.push(particle);
+        }
+
+        window.setTimeout(() => {
+          particles.forEach((particle) => button?.appendChild(particle));
+        }, PARTICLE_DELAY_MS);
+
+        const cleanupDelay =
+          MAX_FADE_DURATION_MS +
+          MAX_FADE_DELAY_MS +
+          PARTICLE_CLEANUP_DELAY_MS +
+          MAX_FADE_ADJUST_MS +
+          PARTICLE_DELAY_MS;
+
+        window.setTimeout(() => {
+          particles.forEach((particle) => particle.remove());
+        }, cleanupDelay);
+      }
+    });
+  });
+</script>
+
+<style>
+  @keyframes hueRotate {
+    to {
+      filter: hue-rotate(var(--hue-rotation));
+    }
+  }
+
+  :global(.particle) {
+    border-radius: 50%;
+    display: block;
+    height: var(--size);
+    inset: 0;
+    margin: auto;
+    pointer-events: none;
+    position: absolute;
+    width: var(--size);
+  }
+
+  .triangle-button {
+    border: 1px solid hotpink;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 16px;
+    position: relative;
+
+    &:hover {
+      background: hsl(0deg 0% 100% / 0.1);
+
+      polygon {
+        stroke: teal;
+      }
+    }
+
+    &.liked polygon {
+      fill: teal;
+      stroke: teal;
+    }
+
+    &.liked .pop-circle {
+      animation:
+        fromShrunken var(--pop-circle-duration),
+        popCircleColorShift var(--pop-circle-duration),
+        fadeFromOpaque 300ms var(--pop-circle-duration) backwards;
+    }
+
+    &.liked svg {
+      animation: fromShrunken 2000ms var(--pop-circle-duration) backwards
+        linear(
+          0,
+          0.04 1.1%,
+          0.156 2.3%,
+          1.015 8.5%,
+          1.157 10.4%,
+          1.217 12.4%,
+          1.217 13.6%,
+          1.193 15%,
+          0.992 21.7%,
+          0.964 23.5%,
+          0.952 25.3%,
+          0.957 27.9%,
+          1.002 34.7%,
+          1.01 38.2%,
+          0.998 51%,
+          1
+        );
+    }
+  }
+
+  .triangle-button svg {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  @keyframes fromShrunken {
+    from {
+      transform: scale(0);
+    }
+  }
+
+  @keyframes popCircleColorShift {
+    from {
+      background: hsl(350deg 100% 60%);
+    }
+  }
+
+  .pop-circle {
+    position: absolute;
+    inset: 0;
+    background: hsl(270deg 100% 80%);
+    border-radius: 50%;
+    opacity: 0;
+  }
+</style>
