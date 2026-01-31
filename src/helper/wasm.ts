@@ -1,8 +1,10 @@
 import type { Cluster2 } from "../features/triangulator/types/Cluster2";
+import type { Triangle3 } from "../features/triangulator/types/Triangle3";
+import type { TriangulationResult } from "../features/triangulator/types/TriangulationResult";
 import type { Vertex3 } from "../features/triangulator/types/Vertex3";
 
-/** WASM bounds use (x, y); we use (x, z) for 2D with y=0 */
-function wasmVertex2ToVertex3(v: { x: number; y: number; }): Vertex3 {
+/** WASM 2D vertex { x, y }; we use Vertex3 with (x, z) for 2D and y=0 */
+export function wasmVertex2ToVertex3(v: { x: number; y: number }): Vertex3 {
 	return { x: v.x, y: 0, z: v.y };
 }
 
