@@ -34,3 +34,28 @@ export function wasmFlat2DToVertex3(flat: number[]): Vertex3[] {
 	}
 	return out;
 }
+
+/** Rita triangulation result: triangles and vertices as 2D { x, y } */
+export type RitaTriangulationResult = {
+	triangles: Array<{
+		id: string;
+		a: { x: number; y: number };
+		b: { x: number; y: number };
+		c: { x: number; y: number };
+	}>;
+	vertices: Array<{ x: number; y: number }>;
+};
+
+/** Convert rita WASM triangulation result to our TriangulationResult (Vertex3, Triangle3) */
+export function wasmRitaTriangulationToTriangulationResult(
+	result: RitaTriangulationResult,
+): TriangulationResult {
+	const vertices: Vertex3[] = result.vertices.map((v) => wasmVertex2ToVertex3(v));
+	const triangles: Triangle3[] = result.triangles.map((t) => ({
+		id: t.id,
+		a: wasmVertex2ToVertex3(t.a),
+		b: wasmVertex2ToVertex3(t.b),
+		c: wasmVertex2ToVertex3(t.c),
+	}));
+	return { triangles, vertices };
+}
