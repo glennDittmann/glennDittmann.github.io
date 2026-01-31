@@ -62,9 +62,7 @@ export async function invoke<T>(
 				const flat = new Float64Array(
 					request.vertices.flatMap((v) => [v.x, v.z]),
 				);
-				console.log("request.vertices", request.vertices);
-				console.log("request.epsilon", request.epsilon);
-				console.log("flat", flat);
+
 				const result = ritaTriangulate(
 					flat,
 					undefined, // ignore epsilon for now, since also eps=0.0 can trigger wasm errors in rita

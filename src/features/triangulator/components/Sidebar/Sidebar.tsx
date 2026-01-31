@@ -66,8 +66,6 @@ export default function Sidebar() {
 	const [numVertices, setNumVertices] = useState(4);
 
 	async function triangulate() {
-		console.log(`Triangulating ${numVertices} vertices....`);
-
 		const triangulationResult = await invoke<TriangulationResult>(
 			"triangulate",
 			{
@@ -86,8 +84,6 @@ export default function Sidebar() {
 	}
 
 	async function tetrahedralize() {
-		console.log(`Tetrahedralizing ${numVertices} vertices....`);
-
 		const tetrahedralizationResult = await invoke<TetrahedralizationResult>(
 			"tetrahedralize",
 			{
@@ -182,8 +178,6 @@ export default function Sidebar() {
 	// Vertex clustering workflow functions
 	async function handleCluster() {
 		try {
-			console.log(`Clustering ${vertices.length} vertices...`);
-
 			const clusteringResult = await invoke<ClusteringResult2>("cluster2d", {
 				request: {
 					vertices,
@@ -215,8 +209,6 @@ export default function Sidebar() {
 
 	async function handleSimplify() {
 		try {
-			console.log(`Simplifying ${clusters.length} clusters...`);
-
 			const simplificationResult = await invoke<SimplificationResult>(
 				"simplify2d",
 				{
@@ -252,8 +244,6 @@ export default function Sidebar() {
 
 	async function handleClusteringTriangulate() {
 		try {
-			console.log(`Triangulating ${simplifiedVertices.length} simplified vertices...`);
-
 			const triangulationResult = await invoke<TriangulationResult>(
 				"triangulate",
 				{
