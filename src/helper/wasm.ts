@@ -1,4 +1,6 @@
 import type { Cluster2 } from "../features/triangulator/types/Cluster2";
+import type { TetrahedralizationResult } from "../features/triangulator/types/TetrahedralizationResult";
+import type { Tetrahedron3 } from "../features/triangulator/types/Tetrahedron3";
 import type { Triangle3 } from "../features/triangulator/types/Triangle3";
 import type { TriangulationResult } from "../features/triangulator/types/TriangulationResult";
 import type { Vertex3 } from "../features/triangulator/types/Vertex3";
@@ -46,6 +48,18 @@ export type RitaTriangulationResult = {
 	vertices: Array<{ x: number; y: number }>;
 };
 
+/** Rita triangulation result: triangles and vertices as 3D { x, y, z } */
+export type RitaTriangulation3DResult = {
+	tetrahedra: Array<{
+		id: string;
+		a: { x: number; y: number; z: number };
+		b: { x: number; y: number; z: number };
+		c: { x: number; y: number; z: number };
+		d: { x: number; y: number; z: number };
+	}>;
+	vertices: Array<{ x: number; y: number; z: number }>;
+};
+
 /** Convert rita WASM triangulation result to our TriangulationResult (Vertex3, Triangle3) */
 export function wasmRitaTriangulationToTriangulationResult(
 	result: RitaTriangulationResult,
@@ -59,3 +73,18 @@ export function wasmRitaTriangulationToTriangulationResult(
 	}));
 	return { triangles, vertices };
 }
+
+/** Convert rita WASM triangulation3d result to our TriangulationResult (Vertex3, Triangle3) */
+export function wasmRitaTriangulation3DToTetrahedralizationResult(
+	result: RitaTriangulation3DResult,
+): TetrahedralizationResult {
+	const vertices: Vertex3[] = result.vertices.map((v) => ({ x: v.x, y: v.z, z: v.y }));
+	const tetrahedra: Tetrahedron3[] = result.tetrahedra.map((t) => ({
+		id: t.id,
+		a: { x: t.a.x, y: t.a.z, z: t.a.y },
+		b: { x: t.b.x, y: t.b.z, z: t.b.y },
+		c: { x: t.c.x, y: t.c.z, z: t.c.y },
+		d: { x: t.d.x, y: t.d.z, z: t.d.y },
+	}));
+		return { tetrahedra, vertices };
+	}

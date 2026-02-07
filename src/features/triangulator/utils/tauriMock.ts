@@ -11,11 +11,13 @@ import type { TetrahedralizationResult } from "../types/TetrahedralizationResult
 import type { TriangulationRequest } from "../types/TriangulationRequest";
 import type { TriangulationResult } from "../types/TriangulationResult";
 import init, { VertexClusterer2D } from "vertex_clustering";
-import initRita, { triangulate as ritaTriangulate } from "@lempf/rita";
+import initRita, { triangulate as ritaTriangulate, triangulate3d as ritaTriangulate3D } from "@lempf/rita";
 import {
+	type RitaTriangulation3DResult,
 	type RitaTriangulationResult,
 	wasmClusters2ToCluster2,
 	wasmFlat2DToVertex3,
+	wasmRitaTriangulation3DToTetrahedralizationResult,
 	wasmRitaTriangulationToTriangulationResult,
 } from "../../../helper/wasm";
 
@@ -76,15 +78,24 @@ export async function invoke<T>(
 			}
 		}
 		case "tetrahedralize": {
-			// TODO: Implement tetrahedralization in WASM or via API
-			const request = args?.request as TriangulationRequest;
-			console.warn(
-				"Tetrahedralization not yet implemented in WASM. Returning empty result.",
-			);
-			return {
-				tetrahedra: [],
-				vertices: request?.vertices || [],
-			} as T;
+			const request = args?.request as TetrahedralizationResult;
+			try {
+				await ensureRita();
+				const flat = new Float64Array(
+					request.vertices.flatMap((v) => [v.x, v.z, v.y]),
+				);
+
+				const result = ritaTriangulate3D(
+					flat,
+					undefined, // ignore epsilon for now, since also eps=0.0 can trigger wasm errors in rita
+				) as RitaTriangulation3DResult;
+				return wasmRitaTriangulation3DToTetrahedralizationResult(result) as T;
+			} catch (error) {
+				console.error("WASM tetrahedralization failed:", error);
+				throw new Error(
+					`Tetrahedralization failed: ${error instanceof Error ? error.message : String(error)}`,
+				);
+			}
 		}
 		case "cluster2d": {
 			const request = args?.request as ClusteringRequest;
