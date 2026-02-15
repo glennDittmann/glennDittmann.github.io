@@ -2,16 +2,17 @@
 import Rect from "./Rect.astro";
 
 const {
-  width = 200,
-  height = 200,
+  width = 100,
+  height = 100,
   stroke = "black",
-  strokeWidth = 4,
+  outlineStrokeWidth = 4,
+  inlineStrokeWidth = 4,
   fill = "none",
   ...rest
 } = Astro.props;
 ---
 
-<svg width={width} height={height} viewBox="-10 -10 120 120" {...rest}>
+<svg width={width} height={height} viewBox="0 0 100 100" {...rest}>
   <polygon
     points="
       0,0
@@ -23,7 +24,7 @@ const {
       100,0
     "
     stroke={stroke}
-    stroke-width={strokeWidth}
+    stroke-width={outlineStrokeWidth}
     fill={fill}></polygon>
   <line
     x1="50"
@@ -31,12 +32,18 @@ const {
     x2="50"
     y2="40"
     stroke={stroke}
-    stroke-width={strokeWidth}></line>
+    stroke-width={inlineStrokeWidth}></line>
   <line
     x1="50"
     y1="100"
     x2="50"
     y2="60"
     stroke={stroke}
-    stroke-width={strokeWidth}></line>
+    stroke-width={inlineStrokeWidth}></line>
 </svg>
+
+<style>
+  svg {
+    overflow: visible;
+  }
+</style>

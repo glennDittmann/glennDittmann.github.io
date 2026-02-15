@@ -1,7 +1,7 @@
 ---
 const {
-  width = 200,
-  height = 200,
+  width = 100,
+  height = 100,
   stroke = "black",
   strokeWidth = 4,
   fill = "none",
@@ -9,7 +9,7 @@ const {
 } = Astro.props;
 ---
 
-<svg width={width} height={height} viewBox="-10 -10 120 120" {...rest}>
+<svg width={width} height={height} viewBox="0 0 100 100" {...rest}>
   <rect
     x="0"
     y="0"
@@ -22,3 +22,10 @@ const {
   </rect>
   <slot />
 </svg>
+
+<style>
+  svg {
+    /* set this the svg container does not get clipped (would result in round corners and thind top/bottom edges) */
+    overflow: visible;
+  }
+</style>

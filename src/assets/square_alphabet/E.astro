@@ -2,28 +2,29 @@
 import Rect from "./Rect.astro";
 
 const {
-  width = 200,
-  height = 200,
+  width = 100,
+  height = 100,
   stroke = "black",
-  strokeWidth = 4,
+  outlineStrokeWidth = 4,
+  inlineStrokeWidth = 4,
   fill = "none",
   ...rest
 } = Astro.props;
 ---
 
-<Rect width={width} height={height} stroke={stroke} fill={fill} {...rest}>
+<Rect width={width} height={height} stroke={stroke} fill={fill} strokeWidth={outlineStrokeWidth} {...rest}>
   <line
     x1="50"
     y1="40"
     x2="100"
     y2="40"
     stroke={stroke}
-    stroke-width={strokeWidth}></line>
+    stroke-width={inlineStrokeWidth}></line>
   <line
     x1="50"
     y1="60"
     x2="100"
     y2="60"
     stroke={stroke}
-    stroke-width={strokeWidth}></line>
+    stroke-width={inlineStrokeWidth}></line>
 </Rect>
