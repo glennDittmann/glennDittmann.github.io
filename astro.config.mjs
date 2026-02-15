@@ -53,5 +53,10 @@ export default defineConfig({
   integrations: [react()],
   vite: {
     plugins: [tailwindcss(), wasmMimeType()],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "src"),
+      },
+    },
   },
 });
