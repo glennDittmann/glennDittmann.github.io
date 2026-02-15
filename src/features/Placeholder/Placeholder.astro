@@ -1,0 +1,95 @@
+---
+import A from "@/assets/square_alphabet/A.astro";
+import B from "@/assets/square_alphabet/B.astro";
+import C from "@/assets/square_alphabet/C.astro";
+import E from "@/assets/square_alphabet/E.astro";
+import K from "@/assets/square_alphabet/K.astro";
+import M from "@/assets/square_alphabet/M.astro";
+import N from "@/assets/square_alphabet/N.astro";
+import O from "@/assets/square_alphabet/O.astro";
+import S from "@/assets/square_alphabet/S.astro";
+
+const textSize = 150;
+// todo: somehow in this file tailwind does not work
+// placeholder: flex p-3 w-full h-full items-center justify-center gap-2
+// text-row: flex flex-row gap-5
+---
+
+
+<div class="placeholder">
+  <div class="text-row">
+    <C 
+      width={textSize} 
+      height={textSize}
+    /> 
+    <O 
+      width={textSize}
+      height={textSize}
+    /> 
+    <M 
+      width={textSize}
+      height={textSize}
+    />
+    <E 
+      width={textSize} 
+      height={textSize} 
+    />
+  </div>
+  <div class="text-row">
+    <B
+      width={textSize}
+      height={textSize} 
+    />
+    <A 
+      width={textSize} 
+      height={textSize} 
+    />
+    <C 
+      width={textSize}
+      height={textSize}
+    />
+    <K 
+      width={textSize}
+      height={textSize}
+    />
+  </div>
+  <div class="text-row">
+    <S
+      width={textSize}
+      height={textSize}
+    />
+    <O
+      width={textSize}
+      height={textSize}
+    />
+    <O
+      width={textSize}
+      height={textSize}
+    />
+    <N
+      width={textSize}
+      height={textSize}
+    />
+  </div>
+</div>
+
+<style>
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    border: 1px solid teal;
+    border-radius: 10px;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .text-row {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }
+</style>
