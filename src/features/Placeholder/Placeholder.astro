@@ -15,76 +15,86 @@ const textSize = 150;
 // text-row: flex flex-row gap-5
 ---
 
-
 <div class="placeholder">
   <div class="text-row">
     <C 
       width={textSize} 
       height={textSize}
+      fill="hsl(142deg 71% 65%)"
     /> 
     <O 
       width={textSize}
       height={textSize}
+      fill="hsl(142deg 71% 65%)"
     /> 
     <M 
       width={textSize}
       height={textSize}
+      fill="hsl(142deg 71% 65%)"
     />
     <E 
       width={textSize} 
-      height={textSize} 
+      height={textSize}
+      fill="hsl(142deg 71% 65%)"
     />
   </div>
   <div class="text-row">
     <B
       width={textSize}
-      height={textSize} 
+      height={textSize}
+      fill="hsl(164deg 100% 44%)"
     />
     <A 
       width={textSize} 
       height={textSize} 
+      fill="hsl(164deg 100% 44%)"
     />
     <C 
       width={textSize}
       height={textSize}
+      fill="hsl(164deg 100% 44%)"
     />
     <K 
       width={textSize}
       height={textSize}
+      fill="hsl(164deg 100% 44%)"
     />
   </div>
   <div class="text-row">
     <S
       width={textSize}
       height={textSize}
+      fill="hsl(171deg 100% 43%)"
     />
     <O
       width={textSize}
       height={textSize}
+      fill="hsl(171deg 100% 43%)"
     />
     <O
       width={textSize}
       height={textSize}
+      fill="hsl(171deg 100% 43%)"
     />
     <N
       width={textSize}
       height={textSize}
+      fill="hsl(171deg 100% 43%)"
     />
   </div>
 </div>
 
 <style>
   .placeholder {
+    align-items: center;
+    background-color: lightgray;
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    border: 1px solid teal;
-    border-radius: 10px;
-    padding: 10px;
-    align-items: center;
-    justify-content: center;
     gap: 5px;
+    height: 100vh;
+    justify-content: center;
+    padding: 10px;
+    width: 100vw;
   }
 
   .text-row {
