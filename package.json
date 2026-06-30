@@ -9,7 +9,7 @@
 		"astro": "astro"
 	},
 	"dependencies": {
-		"@astrojs/react": "^4.4.2",
+		"@astrojs/react": "^5.0.1",
 		"@lempf/rita": "^0.2.2",
 		"@mantine/core": "^8.3.13",
 		"@mantine/hooks": "^8.3.13",
@@ -19,7 +19,7 @@
 		"@reduxjs/toolkit": "^2.11.2",
 		"@tailwindcss/vite": "^4.1.11",
 		"@types/three": "^0.176.0",
-		"astro": "^5.16.4",
+		"astro": "^6.0.7",
 		"gsap": "^3.13.0",
 		"motion": "^12.34.0",
 		"react": "^19.2.4",
@@ -27,6 +27,7 @@
 		"react-redux": "^9.2.0",
 		"tailwindcss": "^4.1.11",
 		"three": "^0.176.0",
-		"vertex_clustering": "^0.1.2"
+		"vertex_clustering": "^0.1.2",
+		"vite-plugin-glsl": "^1.5.5"
 	}
 }
