@@ -20,7 +20,7 @@ export const randBetween = (lo: number, hi: number): number => hi - Math.random(
  * @param angle the angle in degrees
  * @returns the angle in radians
  */
-const degToRed = (angle: number): number => angle * Math.PI / 180.0;
+export const degToRad = (angle: number): number => angle * Math.PI / 180.0;
 
 /**
  * Converts polar (angle, distance) to cartesian (x, y) coordinates
@@ -29,7 +29,7 @@ const degToRed = (angle: number): number => angle * Math.PI / 180.0;
  * @returns the corresponding cartesian coordiantes
  */
 export const polarToCartesian = (angle: number, distance: number): Vec2 => {
-   const angleInRadians = degToRed(angle);
+   const angleInRadians = degToRad(angle);
 
    return {
     x: Math.cos(angleInRadians) * distance,
