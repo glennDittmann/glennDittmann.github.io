@@ -9,10 +9,10 @@ const toolTipText = "Triangulator is only available on larger screens. But it mi
 <Layout>
 	<div class="responsive-wrap">
 		<div class="when-small">
- 			<Placeholder client:media="(max-width: 768px)" toolTipText={toolTipText} />
+			<Placeholder toolTipText={toolTipText} />
 		</div>
 		<div class="when-large">
-			<App client:media="(min-width: 769px)" client:load />
+			<App client:media="(min-width: 769px)" />
 		</div>
 	</div>
 </Layout>
