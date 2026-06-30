@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import fs from "node:fs";
+import glsl from "vite-plugin-glsl";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -52,7 +53,7 @@ function wasmMimeType() {
 export default defineConfig({
   integrations: [react()],
   vite: {
-    plugins: [tailwindcss(), wasmMimeType()],
+    plugins: [glsl(), tailwindcss(), wasmMimeType()],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),
