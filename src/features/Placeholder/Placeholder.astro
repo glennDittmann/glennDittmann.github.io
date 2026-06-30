@@ -8,78 +8,139 @@ import M from "@/assets/square_alphabet/M.astro";
 import N from "@/assets/square_alphabet/N.astro";
 import O from "@/assets/square_alphabet/O.astro";
 import S from "@/assets/square_alphabet/S.astro";
+import W from "@/assets/square_alphabet/W.astro";
+import H from "@/assets/square_alphabet/H.astro";
+import Y from "@/assets/square_alphabet/Y.astro";
 
-const textSize = 150;
-// todo: somehow in this file tailwind does not work
+const { toolTipText = "Why not !?"} = Astro.props;
+
+const textSize = 75;
+const firstRowColor = "none";//hsl(142deg 71% 65%)";
+const secondRowColor = "none";//hsl(195deg 100% 50%)";
+const thirdRowColor = "none";//hsl(280deg 64% 61%)";
+const strokeColor = "black";
+
+const toolTipTextSize = 40;
+
+// Note: somehow in this file tailwind does not work
 // placeholder: flex p-3 w-full h-full items-center justify-center gap-2
 // text-row: flex flex-row gap-5
 ---
 
 <div class="placeholder">
-  <div class="text-row">
-    <C 
-      width={textSize} 
-      height={textSize}
-      fill="hsl(142deg 71% 65%)"
-    /> 
-    <O 
-      width={textSize}
-      height={textSize}
-      fill="hsl(142deg 71% 65%)"
-    /> 
-    <M 
-      width={textSize}
-      height={textSize}
-      fill="hsl(142deg 71% 65%)"
-    />
-    <E 
-      width={textSize} 
-      height={textSize}
-      fill="hsl(142deg 71% 65%)"
-    />
+  <wa-tooltip for="tooltip">{toolTipText}</wa-tooltip>
+
+  <div class="canvas-container" id="canvas-container">
+    <div class="text-row">
+      <C
+        id="c1"
+        width={textSize}
+        height={textSize}
+        fill={firstRowColor}
+        stroke={strokeColor}
+      />
+      <O
+        id="o1"
+        width={textSize}
+        height={textSize}
+        fill={firstRowColor}
+        stroke={strokeColor}
+      />
+      <M
+        id="m"
+        width={textSize}
+        height={textSize}
+        fill={firstRowColor}
+        stroke={strokeColor}
+      />
+      <E
+        id="e"
+        width={textSize}
+        height={textSize}
+        fill={firstRowColor}
+        stroke={strokeColor}
+      />
+    </div>
+    <div class="text-row">
+      <B
+        id="b"
+        width={textSize}
+        height={textSize}
+        fill={secondRowColor}
+        stroke={strokeColor}
+      />
+      <A
+        id="a"
+        width={textSize}
+        height={textSize}
+        fill={secondRowColor}
+        stroke={strokeColor}
+      />
+      <C
+        id="c2"
+        width={textSize}
+        height={textSize}
+        fill={secondRowColor}
+        stroke={strokeColor}
+      />
+      <K
+        id="k"
+        width={textSize}
+        height={textSize}
+        fill={secondRowColor}
+        stroke={strokeColor}
+        rightHoleStroke="black"
+        rightHoleFill="black"
+      />
+    </div>
+    <div class="text-row">
+      <S
+        id="s"
+        width={textSize}
+        height={textSize}
+        fill={thirdRowColor}
+        stroke={strokeColor}
+      />
+      <O
+        id="o2"
+        width={textSize}
+        height={textSize}
+        fill={thirdRowColor}
+        stroke={strokeColor}
+      />
+      <O
+        id="o3"
+        width={textSize}
+        height={textSize}
+        fill={thirdRowColor}
+        stroke={strokeColor}
+      />
+      <N
+        id="n"
+        width={textSize}
+        height={textSize}
+        fill={thirdRowColor}
+        stroke={strokeColor}
+      />
+    </div>
+    <canvas id="canvas"></canvas>
   </div>
-  <div class="text-row">
-    <B
-      width={textSize}
-      height={textSize}
-      fill="hsl(164deg 100% 44%)"
+
+  <div id="tooltip">
+    <W
+      width={toolTipTextSize}
+      height={toolTipTextSize}
+      stroke="white"
     />
-    <A 
-      width={textSize} 
-      height={textSize} 
-      fill="hsl(164deg 100% 44%)"
+    <H
+      width={toolTipTextSize}
+      height={toolTipTextSize}
+      stroke="white"
     />
-    <C 
-      width={textSize}
-      height={textSize}
-      fill="hsl(164deg 100% 44%)"
-    />
-    <K 
-      width={textSize}
-      height={textSize}
-      fill="hsl(164deg 100% 44%)"
-    />
-  </div>
-  <div class="text-row">
-    <S
-      width={textSize}
-      height={textSize}
-      fill="hsl(171deg 100% 43%)"
-    />
-    <O
-      width={textSize}
-      height={textSize}
-      fill="hsl(171deg 100% 43%)"
-    />
-    <O
-      width={textSize}
-      height={textSize}
-      fill="hsl(171deg 100% 43%)"
-    />
-    <N
-      width={textSize}
-      height={textSize}
-      fill="hsl(171deg 100% 43%)"
+    <Y
+      width={toolTipTextSize}
+      height={toolTipTextSize}
+      stroke="white"
     />
   </div>
 </div>
@@ -87,19 +148,160 @@ const textSize = 150;
 <style>
   .placeholder {
     align-items: center;
-    background-color: lightgray;
+    background: black;
     display: flex;
     flex-direction: column;
-    gap: 5px;
     height: 100vh;
     justify-content: center;
     padding: 10px;
     width: 100vw;
   }
 
+  .canvas-container {
+    position: relative;
+    z-index: 1;
+  }
+
   .text-row {
     display: flex;
     flex-direction: row;
+  }
+
+  #canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  #tooltip {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 5px;
+    left: 5px;
     gap: 5px;
+    z-index: 1;
   }
 </style>
+
+<script>
+  import * as THREE from "three";
+  import { degToRad } from "@/helper/math";
+  import fragmentShader from "./shader/frag.glsl?raw";
+  import vertexShader from "./shader/vert.glsl?raw";
+import { strictObject } from "astro:schema";
+
+  const canvasContainer = document.querySelector("#canvas-container") as HTMLElement;
+  const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
+  if (!canvasContainer || !canvas) throw new Error("Placeholder: missing #canvas-container or #canvas");
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ canvas });
+  camera.position.z = 5;
+
+  function getContainerSize() {
+    return { w: canvasContainer.clientWidth, h: canvasContainer.clientHeight };
+  }
+
+  /**
+   *     camera
+           *
+          /|\
+         / | \
+        /  |  \   vFov/2
+       /   |   \
+      /    d    \
+     /     |     \
+    *------+------*  ← plane at distance d
+         height/2
+   */
+  function planeSizeForFrustum() {
+    const distanceToPlane = Math.abs(camera.position.z); // distance from camera to plane, plane is at z=0
+    const fovRadians = degToRad(camera.fov);
+
+    const height = 2 * distanceToPlane * Math.tan(fovRadians / 2);
+    const width = height * camera.aspect;
+
+    return { width, height };
+  }
+
+  function buildPlaneGeometry(width: number, height: number) {
+    const geometry = new THREE.PlaneGeometry(width, height);
+    const count = geometry.attributes.position.count;
+    const randoms = new Float32Array(count);
+
+    for (let i = 0; i < count; i++) randoms[i] = Math.random();
+
+    geometry.setAttribute("aRandom", new THREE.BufferAttribute(randoms, 1));
+
+    return geometry;
+  }
+
+  function resize() {
+    const { w, h } = getContainerSize();
+
+    if (w === 0 || h === 0) return;
+
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+
+    const { width, height } = planeSizeForFrustum();
+    const geometry = buildPlaneGeometry(width, height);
+
+    if (plane.geometry) plane.geometry.dispose();
+    plane.geometry = geometry;
+  }
+
+  const shaderMaterial = new THREE.ShaderMaterial({
+    fragmentShader,
+    vertexShader,
+  });
+  const plane = new THREE.Mesh(buildPlaneGeometry(1, 1), shaderMaterial);
+  scene.add(plane);
+
+  resize();
+
+  const resizeObserver = new ResizeObserver(() => resize());
+  resizeObserver.observe(canvasContainer);
+
+  function animate() {
+    renderer.render(scene, camera);
+  }
+  renderer.setAnimationLoop(animate);
+
+  /**
+   * @param a any value
+   * @param b any other value
+   *
+   * @returns whether the values are strictly equal, i.e. a === b
+   */
+  function strictEquals(a: any, b: any): boolean {
+    // Catch the -0 should be equals to 0 case
+    if (Object.is(a, -0) && Object.is(b, 0) || Object.is(a, 0) && Object.is(b, -0)) {
+      return true;
+    }
+
+    // Catch the NaN should NOT be equals NaN case
+    if (Object.is(a, NaN) && Object.is(b, NaN)) {
+      return false;
+    }
+
+    return Object.is(a, b);
+
+  }
+
+  const a = NaN;
+  const b = NaN;
+  const expected = a === b;
+  const result = strictEquals(a, b);
+  console.debug(`a === b           : ${expected}`);
+  console.debug(`strictEquals(a, b): ${result}`);
+  console.debug(`result is correct : ${result === expected ? 'Yes :)' : 'No :('}`)
+</script>
