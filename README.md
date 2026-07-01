@@ -1,5 +1,6 @@
 # To Do
-- void zero stack
+
+- check if vite+ really uses npm
 - simple start page
 - triangulator responsive design
 - simple 4d orientation instead of robust one
