@@ -12,23 +12,23 @@ import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 
 export default function App() {
-	return (
-		<MantineProvider defaultColorScheme="dark">
-			<Notifications limit={5} />
-			<Provider store={store}>
-				<main>
-					<TitleBar />
-					<div className="main-container">
-						<div className="content">
-							<Sidebar />
-							<div className="viewport">
-								<Experience />
-							</div>
-						</div>
-						<Footer />
-					</div>
-				</main>
-			</Provider>
-		</MantineProvider>
-	);
+  return (
+    <MantineProvider defaultColorScheme="dark">
+      <Notifications limit={5} />
+      <Provider store={store}>
+        <main>
+          <TitleBar />
+          <div className="main-container">
+            <div className="content">
+              <Sidebar />
+              <div className="viewport">
+                <Experience />
+              </div>
+            </div>
+            <Footer />
+          </div>
+        </main>
+      </Provider>
+    </MantineProvider>
+  );
 }

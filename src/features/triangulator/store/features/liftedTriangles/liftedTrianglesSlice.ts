@@ -1,27 +1,26 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Triangle3 } from "../../types/Triangle3";
+import type { Triangle3 } from "../../../types/Triangle3";
 
 interface LiftedTrianglesState {
-	liftedTriangles: Triangle3[];
+  liftedTriangles: Triangle3[];
 }
 
 const initialState: LiftedTrianglesState = {
-	liftedTriangles: [],
+  liftedTriangles: [],
 };
 
 const liftedTrianglesSlice = createSlice({
-	name: "liftedTriangles",
-	initialState,
-	reducers: {
-		setLiftedTriangles: (state, action: PayloadAction<Triangle3[]>) => {
-			state.liftedTriangles = action.payload;
-		},
-		clearLiftedTriangles: (state) => {
-			state.liftedTriangles = [];
-		},
-	},
+  name: "liftedTriangles",
+  initialState,
+  reducers: {
+    setLiftedTriangles: (state, action: PayloadAction<Triangle3[]>) => {
+      state.liftedTriangles = action.payload;
+    },
+    clearLiftedTriangles: (state) => {
+      state.liftedTriangles = [];
+    },
+  },
 });
 
-export const { setLiftedTriangles, clearLiftedTriangles } =
-	liftedTrianglesSlice.actions;
+export const { setLiftedTriangles, clearLiftedTriangles } = liftedTrianglesSlice.actions;
 export default liftedTrianglesSlice.reducer;

@@ -20,7 +20,7 @@ export const randBetween = (lo: number, hi: number): number => hi - Math.random(
  * @param angle the angle in degrees
  * @returns the angle in radians
  */
-export const degToRad = (angle: number): number => angle * Math.PI / 180.0;
+export const degToRad = (angle: number): number => (angle * Math.PI) / 180.0;
 
 /**
  * Converts polar (angle, distance) to cartesian (x, y) coordinates
@@ -29,26 +29,22 @@ export const degToRad = (angle: number): number => angle * Math.PI / 180.0;
  * @returns the corresponding cartesian coordiantes
  */
 export const polarToCartesian = (angle: number, distance: number): Vec2 => {
-   const angleInRadians = degToRad(angle);
+  const angleInRadians = degToRad(angle);
 
-   return {
+  return {
     x: Math.cos(angleInRadians) * distance,
     y: Math.sin(angleInRadians) * distance,
-   }
-}
+  };
+};
 
 /**
  * Clamps `val` between `min` and `max`. Note: cases where `min` > `max` are handled.
- * @param val 
- * @param min 
- * @param max 
- * @returns 
+ * @param val
+ * @param min
+ * @param max
+ * @returns
  */
-export const clamp = (
-  val: number,
-  min: number = 0,
-  max: number = 1
-) => {
+export const clamp = (val: number, min: number = 0, max: number = 1) => {
   if (min > max) {
     [min, max] = [max, min];
   }
@@ -65,11 +61,17 @@ export const clamp = (
  * @param targetScaleMax the upper bound of the new range
  * @returns the value of `val` scaled to the new range
  */
-export const lerperino = (val: number, currScaleMin: number, currScaleMax: number, targetScaleMin: number = 0, targetScaleMax: number = 1): number => {
+export const lerperino = (
+  val: number,
+  currScaleMin: number,
+  currScaleMax: number,
+  targetScaleMin: number = 0,
+  targetScaleMax: number = 1,
+): number => {
   const standardNormalization = (val - currScaleMin) / (currScaleMax - currScaleMin);
 
   return (targetScaleMax - targetScaleMin) * standardNormalization + targetScaleMin;
-}
+};
 
 /**
  * Scales `val` from it's current range to a respective new range. Clamps the result between `targetScaleMin` and `targetScaleMax`.
@@ -80,6 +82,16 @@ export const lerperino = (val: number, currScaleMin: number, currScaleMax: numbe
  * @param targetScaleMax the upper bound of the new range
  * @returns the value of `val` scaled and clamped to the new range
  */
-export const clampedLerperino = (val: number, currScaleMin: number, currScaleMax: number, targetScaleMin: number = 0, targetScaleMax: number = 1): number => {
-  return clamp(lerperino(val, currScaleMin, currScaleMax, targetScaleMin, targetScaleMax), targetScaleMin, targetScaleMax);
-}
+export const clampedLerperino = (
+  val: number,
+  currScaleMin: number,
+  currScaleMax: number,
+  targetScaleMin: number = 0,
+  targetScaleMax: number = 1,
+): number => {
+  return clamp(
+    lerperino(val, currScaleMin, currScaleMax, targetScaleMin, targetScaleMax),
+    targetScaleMin,
+    targetScaleMax,
+  );
+};

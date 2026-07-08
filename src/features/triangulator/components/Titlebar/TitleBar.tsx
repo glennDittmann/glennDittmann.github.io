@@ -2,11 +2,11 @@
 import "./TitleBar.css";
 
 export default function TitleBar() {
-	return (
-		<div className="titlebar">
-			<div className="titlebar-left">
-				<div className="window-title">Triangulator</div>
-			</div>
-		</div>
-	);
+  return (
+    <div className="titlebar">
+      <div className="titlebar-left">
+        <div className="window-title">Triangulator</div>
+      </div>
+    </div>
+  );
 }

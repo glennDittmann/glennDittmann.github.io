@@ -6,11 +6,11 @@ import liftedVerticesReducer from "./features/liftedVertices/liftedVerticesSlice
 import vertexSettingsReducer from "./features/vertexSettings/vertexSettingsSlice";
 
 const reducer = combineReducers({
-	experienceSettings: experienceSettingsReducer,
-	liftedTriangles: liftedTrianglesReducer,
-	liftedVertices: liftedVerticesReducer,
-	vertexSettings: vertexSettingsReducer,
-	clustering: clusteringReducer,
+  experienceSettings: experienceSettingsReducer,
+  liftedTriangles: liftedTrianglesReducer,
+  liftedVertices: liftedVerticesReducer,
+  vertexSettings: vertexSettingsReducer,
+  clustering: clusteringReducer,
 });
 
 export default reducer;

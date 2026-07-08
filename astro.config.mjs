@@ -17,12 +17,13 @@ const WASM_DEPS_MAP = {
 };
 
 /** Serve .wasm from node_modules with correct MIME type (Vite may serve with wrong type) */
+/** @returns {import("vite").Plugin} */
 function wasmMimeType() {
   return {
     name: "wasm-mime-type",
     configureServer(server) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      server.middlewares.use((req, res, next) => {
+      /** @type {import("vite").Connect.NextHandleFunction} */
+      const middleware = (req, res, next) => {
         const url = req.url?.split("?")[0] ?? "";
         if (!url.endsWith(".wasm")) {
           next();
@@ -44,7 +45,9 @@ function wasmMimeType() {
         }
         res.setHeader("Content-Type", "application/wasm");
         fs.createReadStream(filePath).pipe(res);
-      });
+      };
+
+      server.middlewares.use(middleware);
     },
   };
 }
