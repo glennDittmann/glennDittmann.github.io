@@ -10,13 +10,31 @@
 
 .footer-controls {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
+  justify-content: center;
 }
 
 .control {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   color: var(--white);
   font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    margin: 4px;
+    border-radius: 12px;
+  }
+
+  .footer-controls {
+    gap: 12px;
+  }
+
+  .control {
+    flex: 1 1 120px;
+  }
 }

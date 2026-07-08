@@ -1,5 +1,5 @@
 .titlebar {
-  height: 32px;
+  height: var(--triangulator-titlebar-height);
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -25,4 +25,15 @@
   color: rgba(255, 255, 255, 0.8);
   margin-left: 8px;
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .titlebar {
+    padding: 0 12px;
+  }
+
+  .window-title {
+    margin-left: 0;
+    font-size: 13px;
+  }
 }

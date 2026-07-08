@@ -41,3 +41,22 @@ sl-button {
 sl-input {
   width: 100%;
 }
+
+@media (max-width: 768px) {
+  .sidebar {
+    order: 2;
+    width: auto;
+    gap: 20px;
+    border-right: none;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .sidebar-section {
+    gap: 12px;
+  }
+
+  .sidebar-section h3 {
+    font-size: 1rem;
+  }
+}

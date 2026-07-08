@@ -269,6 +269,7 @@ export default function Sidebar() {
     <div className="sidebar">
       <div className="sidebar-section">
         <SegmentedControl
+          fullWidth
           value={dimension}
           onChange={(value) => {
             handleDimensionChange(value);
@@ -287,6 +288,7 @@ export default function Sidebar() {
 
       <div className="sidebar-section">
         <SegmentedControl
+          fullWidth
           value={triangulationMethod}
           onChange={handleMethodChange}
           data={[
@@ -317,14 +319,16 @@ export default function Sidebar() {
               />
               <div className="slider-value">{numVertices} vertices</div>
             </div>
-            <Button onClick={handleCreateVertices}>Create Vertices</Button>
+            <Button fullWidth onClick={handleCreateVertices}>
+              Create Vertices
+            </Button>
           </div>
 
           {triangulationMethod === TriangulationMethod.ECIRCLES && (
             <>
               {dimension === "TWO" && (
                 <div className="sidebar-section">
-                  <Button onClick={handleLift} disabled={vertices.length === 0}>
+                  <Button fullWidth onClick={handleLift} disabled={vertices.length === 0}>
                     Lift Vertices
                   </Button>
                 </div>
@@ -347,13 +351,13 @@ export default function Sidebar() {
                   />
                   <div className="slider-value">Epsilon: {epsilon.toFixed(2)}</div>
                 </div>
-                <Button onClick={handleTriangulate} disabled={vertices.length < 3}>
+                <Button fullWidth onClick={handleTriangulate} disabled={vertices.length < 3}>
                   Triangulate
                 </Button>
               </div>
               {dimension === "TWO" && (
                 <div className="sidebar-section">
-                  <Button onClick={handleLiftTriangles} disabled={triangles.length === 0}>
+                  <Button fullWidth onClick={handleLiftTriangles} disabled={triangles.length === 0}>
                     Lift Triangles
                   </Button>
                 </div>
@@ -382,12 +386,14 @@ export default function Sidebar() {
                 <div className="slider-value">Grid Size: {gridSize}</div>
               </div>
               <Button
+                fullWidth
                 onClick={handleCluster}
                 disabled={vertices.length < 3 || isClusteringComplete}
               >
                 Cluster
               </Button>
               <Button
+                fullWidth
                 onClick={handleSimplify}
                 disabled={!isClusteringComplete || isSimplificationComplete}
                 style={{ marginTop: "8px" }}
@@ -395,6 +401,7 @@ export default function Sidebar() {
                 Simplify
               </Button>
               <Button
+                fullWidth
                 onClick={handleClusteringTriangulate}
                 disabled={!isSimplificationComplete}
                 style={{ marginTop: "8px" }}

@@ -1,4 +1,5 @@
 :root {
+  --triangulator-titlebar-height: 40px;
   --primary-color: #007bff;
   --secondary-color: #6c757d;
   --success-color: #28a745;
@@ -29,9 +30,8 @@ body {
 .main-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  /* Height of the titlebar */
-  padding-top: 32px;
+  min-height: 100dvh;
+  padding-top: var(--triangulator-titlebar-height);
 }
 
 .top-bar {
@@ -55,5 +55,34 @@ body {
   display: flex;
   flex-grow: 1;
   min-width: 0;
+  min-height: 0;
   padding: 16px;
+}
+
+@media (min-width: 769px) {
+  :root {
+    --triangulator-titlebar-height: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    gap: 8px;
+    margin: 4px;
+    background: transparent;
+    border: none;
+  }
+
+  .viewport {
+    order: 1;
+    flex: none;
+    height: 50dvh;
+    min-height: 320px;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
 }

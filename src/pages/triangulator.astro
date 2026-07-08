@@ -1,41 +1,8 @@
 ---
 import App from "../features/triangulator/components/App";
 import Layout from "../layouts/Layout.astro";
-import Placeholder from "@/features/Placeholder/Placeholder.astro";
-
-const toolTipText = "Triangulator is only available on larger screens. But it might be available in the future.";
 ---
 
 <Layout>
-	<div class="responsive-wrap">
-		<div class="when-small">
-			<Placeholder toolTipText={toolTipText} />
-		</div>
-		<div class="when-large">
-			<App client:media="(min-width: 769px)" />
-		</div>
-	</div>
+	<App client:load />
 </Layout>
-
-<style>
-	.responsive-wrap {
-		height: 100%;
-	}
-
-	/* Small viewport: show Placeholder only */
-	.when-small {
-		display: block;
-	}
-	.when-large {
-		display: none;
-	}
-
-	@media (min-width: 769px) {
-		.when-small {
-			display: none;
-		}
-		.when-large {
-			display: block;
-		}
-	}
-</style>
