@@ -10,40 +10,40 @@
     "prepare": "vp config"
   },
   "dependencies": {
-    "@astrojs/react": "^6.0.0",
+    "@astrojs/react": "^6.0.4",
     "@lempf/rita": "^0.2.2",
-    "@mantine/core": "^8.3.13",
-    "@mantine/hooks": "^8.3.13",
-    "@mantine/notifications": "^8.3.13",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.5.0",
-    "@reduxjs/toolkit": "^2.11.2",
-    "@tailwindcss/vite": "^4.3.2",
-    "@types/three": "^0.176.0",
-    "astro": "^7.0.4",
-    "gsap": "^3.13.0",
-    "motion": "^12.34.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-redux": "^9.2.0",
-    "tailwindcss": "^4.3.2",
-    "three": "^0.176.0",
+    "@mantine/core": "^9.5.2",
+    "@mantine/hooks": "^9.5.2",
+    "@mantine/notifications": "^9.5.2",
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
+    "@reduxjs/toolkit": "^2.12.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/three": "^0.185.4",
+    "astro": "^7.2.7",
+    "gsap": "^3.15.0",
+    "motion": "^13.1.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-redux": "^9.3.0",
+    "tailwindcss": "^4.3.3",
+    "three": "^0.185.1",
     "vertex_clustering": "^0.1.2",
-    "vite-plugin-glsl": "^1.5.5"
+    "vite-plugin-glsl": "^1.6.1"
   },
   "devDependencies": {
-    "@types/node": "^26.1.1",
+    "@types/node": "^26.3.0",
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
     "vite-plus": "latest"
   },
   "overrides": {
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
-    "vitest": "4.1.9"
+    "vitest": "4.1.11"
   },
   "devEngines": {
     "packageManager": {
       "name": "npm",
-      "version": "11.18.0",
+      "version": "12.0.2",
       "onFail": "download"
     }
   }
