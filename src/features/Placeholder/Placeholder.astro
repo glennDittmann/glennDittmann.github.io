@@ -274,33 +274,4 @@ const toolTipTextSize = 40;
     renderer.render(scene, camera);
   }
   renderer.setAnimationLoop(animate);
-
-  /**
-   * @param a any value
-   * @param b any other value
-   *
-   * @returns whether the values are strictly equal, i.e. a === b
-   */
-  function strictEquals(a: any, b: any): boolean {
-    // Catch the -0 should be equals to 0 case
-    if (Object.is(a, -0) && Object.is(b, 0) || Object.is(a, 0) && Object.is(b, -0)) {
-      return true;
-    }
-
-    // Catch the NaN should NOT be equals NaN case
-    if (Object.is(a, NaN) && Object.is(b, NaN)) {
-      return false;
-    }
-
-    return Object.is(a, b);
-
-  }
-
-  const a = NaN;
-  const b = NaN;
-  const expected = a === b;
-  const result = strictEquals(a, b);
-  console.debug(`a === b           : ${expected}`);
-  console.debug(`strictEquals(a, b): ${result}`);
-  console.debug(`result is correct : ${result === expected ? 'Yes :)' : 'No :('}`)
 </script>
