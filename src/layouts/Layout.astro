@@ -1,5 +1,13 @@
+---
+interface Props {
+	htmlClass?: string;
+}
+
+const { htmlClass } = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="en" class={htmlClass}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />

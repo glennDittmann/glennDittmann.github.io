@@ -1,6 +1,7 @@
-import { Button, SegmentedControl, Slider } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { useState } from "react";
+import type WaRadioGroup from "@awesome.me/webawesome/dist/components/radio-group/radio-group.js";
+import type WaSlider from "@awesome.me/webawesome/dist/components/slider/slider.js";
+import type WaToast from "@awesome.me/webawesome/dist/components/toast/toast.js";
+import { useRef, useState } from "react";
 import type { ClusteringRequest } from "../../types/ClusteringRequest";
 import type { ClusteringResult2 } from "../../types/ClusteringResult2";
 import type { SimplificationRequest2 } from "../../types/SimplificationRequest2";
@@ -62,6 +63,15 @@ export default function Sidebar() {
   const isSimplificationComplete = useAppSelector(selectIsSimplificationComplete);
   const simplifiedVertices = useAppSelector(selectSimplifiedVertices);
   const [numVertices, setNumVertices] = useState(4);
+  const toast = useRef<WaToast | null>(null);
+
+  function showNotification(
+    title: string,
+    message: string,
+    variant: "danger" | "success" = "success",
+  ) {
+    void toast.current?.create(`${title}: ${message}`, { variant });
+  }
 
   async function triangulate() {
     const triangulationResult = await invoke<TriangulationResult>("triangulate", {
@@ -71,11 +81,10 @@ export default function Sidebar() {
     dispatch(setTriangles(triangulationResult.triangles));
     dispatch(clearLiftedTriangles());
 
-    notifications.show({
-      title: "Triangulation Complete",
-      message: `${triangulationResult.triangles.length} triangles created`,
-      withBorder: true,
-    });
+    showNotification(
+      "Triangulation Complete",
+      `${triangulationResult.triangles.length} triangles created`,
+    );
   }
 
   async function tetrahedralize() {
@@ -86,11 +95,10 @@ export default function Sidebar() {
     dispatch(setTetrahedra(tetrahedralizationResult.tetrahedra));
     dispatch(clearLiftedTriangles());
 
-    notifications.show({
-      title: "Tetrahedralization Complete",
-      message: `${tetrahedralizationResult.tetrahedra.length} tetrahedra created`,
-      withBorder: true,
-    });
+    showNotification(
+      "Tetrahedralization Complete",
+      `${tetrahedralizationResult.tetrahedra.length} tetrahedra created`,
+    );
   }
 
   const handleCreateVertices = () => {
@@ -185,19 +193,13 @@ export default function Sidebar() {
         }),
       );
 
-      notifications.show({
-        title: "Clustering Complete",
-        message: `${clusteringResult.clusters.length} clusters created`,
-        withBorder: true,
-      });
+      showNotification(
+        "Clustering Complete",
+        `${clusteringResult.clusters.length} clusters created`,
+      );
     } catch (error) {
       console.error("Clustering failed:", error);
-      notifications.show({
-        title: "Clustering Failed",
-        message: "An error occurred during clustering",
-        color: "red",
-        withBorder: true,
-      });
+      showNotification("Clustering Failed", "An error occurred during clustering", "danger");
     }
   }
 
@@ -217,19 +219,17 @@ export default function Sidebar() {
 
       dispatch(setSimplifiedVertices(simplificationResult.simplified_vertices));
 
-      notifications.show({
-        title: "Simplification Complete",
-        message: `${simplificationResult.simplified_vertices.length} representative vertices created`,
-        withBorder: true,
-      });
+      showNotification(
+        "Simplification Complete",
+        `${simplificationResult.simplified_vertices.length} representative vertices created`,
+      );
     } catch (error) {
       console.error("Simplification failed:", error);
-      notifications.show({
-        title: "Simplification Failed",
-        message: "An error occurred during simplification",
-        color: "red",
-        withBorder: true,
-      });
+      showNotification(
+        "Simplification Failed",
+        "An error occurred during simplification",
+        "danger",
+      );
     }
   }
 
@@ -245,19 +245,13 @@ export default function Sidebar() {
       dispatch(setTriangles(triangulationResult.triangles));
       dispatch(clearLiftedTriangles());
 
-      notifications.show({
-        title: "Triangulation Complete",
-        message: `${triangulationResult.triangles.length} triangles created from clustered vertices`,
-        withBorder: true,
-      });
+      showNotification(
+        "Triangulation Complete",
+        `${triangulationResult.triangles.length} triangles created from clustered vertices`,
+      );
     } catch (error) {
       console.error("Clustering triangulation failed:", error);
-      notifications.show({
-        title: "Triangulation Failed",
-        message: "An error occurred during triangulation",
-        color: "red",
-        withBorder: true,
-      });
+      showNotification("Triangulation Failed", "An error occurred during triangulation", "danger");
     }
   }
 
@@ -266,152 +260,186 @@ export default function Sidebar() {
   const is3DDisabledForClustering = isVertexClustering && dimension === "THREE";
 
   return (
-    <div className="sidebar">
-      <div className="sidebar-section">
-        <SegmentedControl
-          fullWidth
+    <aside className="sidebar wa-stack wa-gap-l" aria-label="Triangulation controls">
+      <wa-toast
+        ref={(element) => {
+          toast.current = element;
+        }}
+      ></wa-toast>
+
+      <div className="sidebar-section wa-stack wa-gap-m">
+        <wa-radio-group
+          className="segmented-control"
+          label="Dimension"
+          orientation="horizontal"
           value={dimension}
-          onChange={(value) => {
-            handleDimensionChange(value);
+          onChange={(event) => {
+            handleDimensionChange(String((event.currentTarget as WaRadioGroup).value));
           }}
-          data={[
-            { label: "2D", value: "TWO" },
-            { label: "3D", value: "THREE" },
-          ]}
-        />
+        >
+          <wa-radio appearance="button" value="TWO">
+            2D
+          </wa-radio>
+          <wa-radio appearance="button" value="THREE">
+            3D
+          </wa-radio>
+        </wa-radio-group>
         {is3DDisabledForClustering && (
-          <div style={{ marginTop: "8px", fontSize: "12px", color: "#868e96" }}>
+          <wa-callout variant="warning" size="s">
             3D mode is not supported for vertex clustering
-          </div>
+          </wa-callout>
         )}
       </div>
 
-      <div className="sidebar-section">
-        <SegmentedControl
-          fullWidth
+      <div className="sidebar-section wa-stack wa-gap-m">
+        <wa-radio-group
+          className="segmented-control"
+          label="Triangulation method"
+          orientation="horizontal"
           value={triangulationMethod}
-          onChange={handleMethodChange}
-          data={[
-            { label: "e-Circles", value: TriangulationMethod.ECIRCLES },
-            {
-              label: "Vertex Clustering",
-              value: TriangulationMethod.VERTEX_CLUSTERING,
-            },
-          ]}
-        />
+          onChange={(event) => {
+            handleMethodChange(String((event.currentTarget as WaRadioGroup).value));
+          }}
+        >
+          <wa-radio appearance="button" value={TriangulationMethod.ECIRCLES}>
+            e-Circles
+          </wa-radio>
+          <wa-radio appearance="button" value={TriangulationMethod.VERTEX_CLUSTERING}>
+            Vertex Clustering
+          </wa-radio>
+        </wa-radio-group>
       </div>
 
       {!is3DDisabledForClustering && (
         <>
-          <div className="sidebar-section">
-            <div className="slider-container">
-              <Slider
-                color="blue"
-                defaultValue={numVertices}
-                onChange={(value) => setNumVertices(value)}
+          <div className="sidebar-section wa-stack wa-gap-m">
+            <div className="slider-container wa-stack wa-gap-xs">
+              <wa-slider
+                label="Vertices"
+                value={numVertices}
+                onInput={(event) => setNumVertices((event.currentTarget as WaSlider).value)}
                 min={minNumVertices}
                 max={maxNumVertices}
-                marks={[
-                  { value: 20, label: "20" },
-                  { value: 50, label: "50" },
-                  { value: 80, label: "80" },
-                ]}
-              />
-              <div className="slider-value">{numVertices} vertices</div>
+                withTooltip
+              >
+                <span slot="reference">{minNumVertices}</span>
+                <span slot="reference">50</span>
+                <span slot="reference">{maxNumVertices}</span>
+              </wa-slider>
+              <div className="slider-value wa-caption-m">{numVertices} vertices</div>
             </div>
-            <Button fullWidth onClick={handleCreateVertices}>
+            <wa-button className="full-width-control" onClick={handleCreateVertices}>
               Create Vertices
-            </Button>
+            </wa-button>
           </div>
 
           {triangulationMethod === TriangulationMethod.ECIRCLES && (
             <>
               {dimension === "TWO" && (
-                <div className="sidebar-section">
-                  <Button fullWidth onClick={handleLift} disabled={vertices.length === 0}>
+                <div className="sidebar-section wa-stack wa-gap-m">
+                  <wa-button
+                    className="full-width-control"
+                    appearance="filled"
+                    onClick={handleLift}
+                    disabled={vertices.length === 0}
+                  >
                     Lift Vertices
-                  </Button>
+                  </wa-button>
                 </div>
               )}
-              <div className="sidebar-section">
+              <div className="sidebar-section wa-stack wa-gap-m">
                 <h3>Triangulation</h3>
-                <div className="slider-container">
-                  <Slider
-                    color="blue"
-                    defaultValue={epsilon}
-                    onChange={(value) => dispatch(setEpsilon(value))}
+                <div className="slider-container wa-stack wa-gap-xs">
+                  <wa-slider
+                    label="Epsilon"
+                    value={epsilon}
+                    onInput={(event) =>
+                      dispatch(setEpsilon((event.currentTarget as WaSlider).value))
+                    }
                     min={0.0}
                     max={1.0}
-                    marks={[
-                      { value: 0.0, label: "0.0" },
-                      { value: 0.5, label: "0.5" },
-                      { value: 1.0, label: "1.0" },
-                    ]}
                     step={0.01}
-                  />
-                  <div className="slider-value">Epsilon: {epsilon.toFixed(2)}</div>
+                    withTooltip
+                  >
+                    <span slot="reference">0.0</span>
+                    <span slot="reference">0.5</span>
+                    <span slot="reference">1.0</span>
+                  </wa-slider>
+                  <div className="slider-value wa-caption-m">Epsilon: {epsilon.toFixed(2)}</div>
                 </div>
-                <Button fullWidth onClick={handleTriangulate} disabled={vertices.length < 3}>
+                <wa-button
+                  className="full-width-control"
+                  variant="brand"
+                  onClick={handleTriangulate}
+                  disabled={vertices.length < 3}
+                >
                   Triangulate
-                </Button>
+                </wa-button>
               </div>
               {dimension === "TWO" && (
-                <div className="sidebar-section">
-                  <Button fullWidth onClick={handleLiftTriangles} disabled={triangles.length === 0}>
+                <div className="sidebar-section wa-stack wa-gap-m">
+                  <wa-button
+                    className="full-width-control"
+                    appearance="filled"
+                    onClick={handleLiftTriangles}
+                    disabled={triangles.length === 0}
+                  >
                     Lift Triangles
-                  </Button>
+                  </wa-button>
                 </div>
               )}
             </>
           )}
 
           {triangulationMethod === TriangulationMethod.VERTEX_CLUSTERING && (
-            <div className="sidebar-section">
+            <div className="sidebar-section wa-stack wa-gap-m">
               <h3>Vertex Clustering Workflow</h3>
-              <div className="slider-container">
-                <Slider
-                  color="blue"
-                  defaultValue={gridSize}
-                  onChange={(value) => dispatch(setGridSize(value))}
+              <div className="slider-container wa-stack wa-gap-xs">
+                <wa-slider
+                  label="Grid size"
+                  value={gridSize}
+                  onInput={(event) =>
+                    dispatch(setGridSize((event.currentTarget as WaSlider).value))
+                  }
                   min={0.1}
                   max={10}
-                  marks={[
-                    { value: 0.1, label: "0.1" },
-                    { value: 1, label: "1" },
-                    { value: 5, label: "5" },
-                    { value: 10, label: "10" },
-                  ]}
                   step={0.1}
-                />
-                <div className="slider-value">Grid Size: {gridSize}</div>
+                  withTooltip
+                >
+                  <span slot="reference">0.1</span>
+                  <span slot="reference">5</span>
+                  <span slot="reference">10</span>
+                </wa-slider>
+                <div className="slider-value wa-caption-m">Grid Size: {gridSize}</div>
               </div>
-              <Button
-                fullWidth
+              <wa-button
+                className="full-width-control"
+                appearance="filled"
                 onClick={handleCluster}
                 disabled={vertices.length < 3 || isClusteringComplete}
               >
                 Cluster
-              </Button>
-              <Button
-                fullWidth
+              </wa-button>
+              <wa-button
+                className="full-width-control"
+                appearance="filled"
                 onClick={handleSimplify}
                 disabled={!isClusteringComplete || isSimplificationComplete}
-                style={{ marginTop: "8px" }}
               >
                 Simplify
-              </Button>
-              <Button
-                fullWidth
+              </wa-button>
+              <wa-button
+                className="full-width-control"
+                variant="brand"
                 onClick={handleClusteringTriangulate}
                 disabled={!isSimplificationComplete}
-                style={{ marginTop: "8px" }}
               >
                 Triangulate
-              </Button>
+              </wa-button>
             </div>
           )}
         </>
       )}
-    </div>
+    </aside>
   );
 }

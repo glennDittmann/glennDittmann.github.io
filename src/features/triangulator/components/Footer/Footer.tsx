@@ -1,4 +1,3 @@
-import { Switch } from "@mantine/core";
 import {
   selectShowVertices,
   toggleAxis,
@@ -16,20 +15,16 @@ export default function Footer() {
 
   return (
     <footer className="footer">
-      <div className="footer-controls">
-        <div className="control">
-          <Switch checked={gridActive} onChange={() => dispatch(toggleGrid())} label="Grid" />
-        </div>
-        <div className="control">
-          <Switch checked={axisActive} onChange={() => dispatch(toggleAxis())} label="Axis" />
-        </div>
-        <div className="control">
-          <Switch
-            checked={showVertices}
-            onChange={() => dispatch(toggleVertices())}
-            label="Vertices"
-          />
-        </div>
+      <div className="footer-controls wa-cluster wa-gap-m wa-justify-content-center">
+        <wa-switch checked={gridActive} onChange={() => dispatch(toggleGrid())}>
+          Grid
+        </wa-switch>
+        <wa-switch checked={axisActive} onChange={() => dispatch(toggleAxis())}>
+          Axis
+        </wa-switch>
+        <wa-switch checked={showVertices} onChange={() => dispatch(toggleVertices())}>
+          Vertices
+        </wa-switch>
       </div>
     </footer>
   );

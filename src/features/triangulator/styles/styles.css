@@ -1,30 +1,11 @@
 :root {
-  --triangulator-titlebar-height: 40px;
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --success-color: #28a745;
-  --info-color: #17a2b8;
-  --warning-color: #ffc107;
-  --danger-color: #dc3545;
-  --light-color: #f8f9fa;
-  --dark-color: #343a40;
-  --white: #ffffff;
-  --primary-grey-1: #f0f0f0;
-  --primary-grey-4: #969696;
-  --primary-grey-5: #575757;
-  --primary-grey-6: #5a5a5a;
-  --primary-grey-7: #3c3c3c;
-  --primary-grey-8: #282828;
-  --primary-grey-9: #141414;
-  --primary-black: #000000;
+  --triangulator-titlebar-height: var(--wa-space-xl);
 }
 
 body {
-  background: var(--primary-grey-9);
-  color: var(--white);
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-    "Helvetica Neue", sans-serif;
+  background: var(--wa-color-surface-default);
+  color: var(--wa-color-text-normal);
+  font-family: var(--wa-font-family-body);
 }
 
 .main-container {
@@ -35,20 +16,20 @@ body {
 }
 
 .top-bar {
-  background-color: var(--primary-grey-9);
-  color: var(--white);
+  background-color: var(--wa-color-surface-default);
+  color: var(--wa-color-text-normal);
   text-align: center;
-  padding: 10px 0;
+  padding: var(--wa-space-s) 0;
 }
 
 .content {
   display: flex;
   flex-grow: 1;
   min-height: 0;
-  background: rgba(255, 255, 255, 0.05);
-  margin: 8px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--wa-color-surface-lowered);
+  margin: var(--wa-space-xs);
+  border-radius: var(--wa-border-radius-m);
+  border: var(--wa-border-width-s) solid var(--wa-color-surface-border);
 }
 
 .viewport {
@@ -56,20 +37,18 @@ body {
   flex-grow: 1;
   min-width: 0;
   min-height: 0;
-  padding: 16px;
+  padding: var(--wa-space-m);
 }
 
-@media (min-width: 769px) {
+@media (max-width: 48em) {
   :root {
-    --triangulator-titlebar-height: 32px;
+    --triangulator-titlebar-height: var(--wa-space-2xl);
   }
-}
 
-@media (max-width: 768px) {
   .content {
     flex-direction: column;
-    gap: 8px;
-    margin: 4px;
+    gap: var(--wa-space-xs);
+    margin: var(--wa-space-2xs);
     background: transparent;
     border: none;
   }
@@ -78,11 +57,11 @@ body {
     order: 1;
     flex: none;
     height: 50dvh;
-    min-height: 320px;
+    min-height: calc(var(--wa-space-4xl) * 5);
     padding: 0;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--wa-color-surface-lowered);
+    border-radius: var(--wa-border-radius-l);
+    border: var(--wa-border-width-s) solid var(--wa-color-surface-border);
     overflow: hidden;
   }
 }
