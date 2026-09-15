@@ -1,0 +1,50 @@
+name: Deploy Website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Download repository
+        uses: actions/checkout@v7
+
+      - name: Set up vite+
+        uses: voidzero-dev/setup-vp@v1.20.0
+        with:
+          node-version: "24"
+          cache: true
+
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+
+      - name: Build website
+        run: vp run build
+
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install --directory --mode=700 ~/.ssh
+          umask 077
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/lempf_deploy
+          printf '$s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Upload website
+        run: |
+          rsync --archive --verbose \
+            --chmod=D755,F644 \
+            --rsh="ssh -i ~/.ssh/lempf_deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes" \
+            dist/ deploy@89.167.94.94:/var/www/lempf/
