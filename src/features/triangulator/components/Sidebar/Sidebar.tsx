@@ -286,7 +286,7 @@ export default function Sidebar() {
         </wa-radio-group>
         {is3DDisabledForClustering && (
           <wa-callout variant="warning" size="s">
-            3D mode is not supported for vertex clustering
+            Vertex Clustering is not yet supported in 3D
           </wa-callout>
         )}
       </div>
