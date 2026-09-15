@@ -40,7 +40,7 @@ jobs:
           install --directory --mode=700 ~/.ssh
           umask 077
           printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/lempf_deploy
-          printf '$s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
 
       - name: Upload website
         run: |
