@@ -14,23 +14,18 @@ import Y from "@/assets/square_alphabet/Y.astro";
 
 const { toolTipText = "Why not !?"} = Astro.props;
 
-const textSize = 75;
+const textSize = 50;
 const firstRowColor = "none";//hsl(142deg 71% 65%)";
 const secondRowColor = "none";//hsl(195deg 100% 50%)";
 const thirdRowColor = "none";//hsl(280deg 64% 61%)";
-const strokeColor = "black";
+const strokeColor = "white";
 
 const toolTipTextSize = 40;
-
-// Note: somehow in this file tailwind does not work
-// placeholder: flex p-3 w-full h-full items-center justify-center gap-2
-// text-row: flex flex-row gap-5
 ---
 
 <div class="placeholder">
   <wa-tooltip for="tooltip">{toolTipText}</wa-tooltip>
 
-  <div class="canvas-container" id="canvas-container">
     <div class="text-row">
       <C
         id="c1"
@@ -89,8 +84,8 @@ const toolTipTextSize = 40;
         height={textSize}
         fill={secondRowColor}
         stroke={strokeColor}
-        rightHoleStroke="black"
-        rightHoleFill="black"
+        rightHoleFill="#0e1111"
+        rightHoleStroke="#0e1111"
       />
     </div>
     <div class="text-row">
@@ -123,8 +118,6 @@ const toolTipTextSize = 40;
         stroke={strokeColor}
       />
     </div>
-    <canvas id="canvas"></canvas>
-  </div>
 
   <div id="tooltip">
     <W
@@ -148,32 +141,23 @@ const toolTipTextSize = 40;
 <style>
   .placeholder {
     align-items: center;
-    background: black;
+    background: #0e1111;
     display: flex;
     flex-direction: column;
     height: 100vh;
-    justify-content: center;
-    padding: 10px;
     width: 100vw;
-  }
-
-  .canvas-container {
-    position: relative;
-    z-index: 1;
+    justify-content: center;
   }
 
   .text-row {
     display: flex;
     flex-direction: row;
-  }
-
-  #canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
+    background: linear-gradient(
+        135deg,
+        #8055ff 0%,
+        #8080ff 50%,
+        #80ddff 100%
+    );
   }
 
   #tooltip {
@@ -189,90 +173,4 @@ const toolTipTextSize = 40;
 
 <script>
   import "@awesome.me/webawesome/dist/components/tooltip/tooltip.js"
-  import * as THREE from "three";
-  import { degToRad } from "@/helper/math";
-  import fragmentShader from "./shader/frag.glsl?raw";
-  import vertexShader from "./shader/vert.glsl?raw";
-
-  const canvasContainer = document.querySelector("#canvas-container") as HTMLElement;
-  const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
-  if (!canvasContainer || !canvas) throw new Error("Placeholder: missing #canvas-container or #canvas");
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ canvas });
-  camera.position.z = 5;
-
-  function getContainerSize() {
-    return { w: canvasContainer.clientWidth, h: canvasContainer.clientHeight };
-  }
-
-  /**
-   *     camera
-           *
-          /|\
-         / | \
-        /  |  \   vFov/2
-       /   |   \
-      /    d    \
-     /     |     \
-    *------+------*  ← plane at distance d
-         height/2
-   */
-  function planeSizeForFrustum() {
-    const distanceToPlane = Math.abs(camera.position.z); // distance from camera to plane, plane is at z=0
-    const fovRadians = degToRad(camera.fov);
-
-    const height = 2 * distanceToPlane * Math.tan(fovRadians / 2);
-    const width = height * camera.aspect;
-
-    return { width, height };
-  }
-
-  function buildPlaneGeometry(width: number, height: number) {
-    const geometry = new THREE.PlaneGeometry(width, height);
-    const count = geometry.attributes.position.count;
-    const randoms = new Float32Array(count);
-
-    for (let i = 0; i < count; i++) randoms[i] = Math.random();
-
-    geometry.setAttribute("aRandom", new THREE.BufferAttribute(randoms, 1));
-
-    return geometry;
-  }
-
-  function resize() {
-    const { w, h } = getContainerSize();
-
-    if (w === 0 || h === 0) return;
-
-    renderer.setSize(w, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-
-    const { width, height } = planeSizeForFrustum();
-    const geometry = buildPlaneGeometry(width, height);
-
-    if (plane.geometry) plane.geometry.dispose();
-    plane.geometry = geometry;
-  }
-
-  const shaderMaterial = new THREE.ShaderMaterial({
-    fragmentShader,
-    vertexShader,
-  });
-  const plane = new THREE.Mesh(buildPlaneGeometry(1, 1), shaderMaterial);
-  scene.add(plane);
-
-  resize();
-
-  const resizeObserver = new ResizeObserver(() => resize());
-  resizeObserver.observe(canvasContainer);
-
-  function animate() {
-    renderer.render(scene, camera);
-  }
-  renderer.setAnimationLoop(animate);
 </script>
