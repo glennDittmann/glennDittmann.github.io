@@ -1,9 +1,9 @@
 // Tauri API replacement for web environment using WASM
 // Uses WebAssembly for clustering operations
 
-import type { ClusteringRequest } from "../types/ClusteringRequest";
-import type { TetrahedralizationResult } from "../types/TetrahedralizationResult";
-import type { TriangulationRequest } from "../types/TriangulationRequest";
+import type { ClusteringRequest } from "@/features/triangulator/types/ClusteringRequest";
+import type { TetrahedralizationResult } from "@/features/triangulator/types/TetrahedralizationResult";
+import type { TriangulationRequest } from "@/features/triangulator/types/TriangulationRequest";
 import init, { VertexClusterer2D } from "vertex_clustering";
 import initRita, {
   triangulate as ritaTriangulate,
@@ -16,7 +16,7 @@ import {
   wasmFlat2DToVertex3,
   wasmRitaTriangulation3DToTetrahedralizationResult,
   wasmRitaTriangulationToTriangulationResult,
-} from "../../../helper/wasm";
+} from "@/features/triangulator/utils/wasm";
 
 // Lazy init: only run in browser, only when first needed (avoids SSR fetch failure)
 let wasmReady: Promise<void> | null = null;
