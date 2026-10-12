@@ -10,7 +10,7 @@
     "prepare": "vp config"
   },
   "dependencies": {
-    "@astrojs/react": "^6.0.6",
+    "@astrojs/react": "^7.0.0",
     "@awesome.me/webawesome": "^3.13.0",
     "@lempf/rita": "^0.2.2",
     "@react-three/drei": "^10.7.8",
