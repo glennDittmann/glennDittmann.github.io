@@ -11,19 +11,21 @@
  * @param interval the time that has to pass between successive invocations of `fn` in ms
  * @returns the throttled version of `fn`
  */
-export function throttle<Args extends unknown[]>(
-  fn: (...args: Args) => void,
+export function throttle<Args extends unknown[], Result>(
+  fn: (...args: Args) => Result,
   interval: number,
-): (...args: Args) => void {
-  let lastExecutedOn = 0;
+): (...args: Args) => Result {
+  let lastExecutedOn: number | undefined;
+  let lastResult: Result;
 
-  return (...args: Args) => {
+  return (...args: Args): Result => {
     const now = Date.now();
-    const timeSinceLastExecution = now - lastExecutedOn;
 
-    if (timeSinceLastExecution > interval) {
+    if (lastExecutedOn === undefined || now - lastExecutedOn >= interval) {
       lastExecutedOn = now;
-      fn(...args);
+      lastResult = fn(...args);
     }
+
+    return lastResult;
   };
 }
