@@ -10,7 +10,7 @@
     "prepare": "vp config"
   },
   "dependencies": {
-    "@astrojs/react": "^7.0.0",
+    "@astrojs/react": "^7.1.2",
     "@awesome.me/webawesome": "^3.13.0",
     "@lempf/rita": "^0.2.2",
     "@react-three/drei": "^10.7.8",
@@ -18,19 +18,19 @@
     "@reduxjs/toolkit": "^2.12.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/three": "^0.186.0",
-    "astro": "^7.3.8",
+    "astro": "^7.4.4",
     "gsap": "^3.15.0",
-    "motion": "^14.1.0",
+    "motion": "^14.6.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-redux": "^9.3.0",
+    "react-redux": "^9.3.1",
     "tailwindcss": "^4.3.3",
     "three": "^0.186.1",
     "vertex_clustering": "^0.1.2",
     "vite-plugin-glsl": "^1.6.2"
   },
   "devDependencies": {
-    "@types/node": "^26.6.5",
+    "@types/node": "^26.6.6",
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
     "vite-plus": "latest"
   },
